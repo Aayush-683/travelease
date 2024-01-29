@@ -22,6 +22,9 @@ app.set('views', './views');
 app.get('/', (req, res) => {
     res.render('index');
 });
+app.get('/auth',(req,res)=>{
+    res.render('login-signup')
+})
 
 // Start Server
 app.listen(port, () => {

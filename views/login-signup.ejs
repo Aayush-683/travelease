@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/login-signup.css">
+    <title>Login-Signup Form</title>
+</head>
+
+<body>
+    <section class="con">
+        <div class="signup">
+            <h2>Signup</h2>
+            <form action="#">
+                <input type="text" name="fname" id="Full Name" placeholder="Full name" required>
+                <input type="email"  name="email" id="Email" placeholder="Email  address" required>
+                <input type="password" name="pass" id="Password" placeholder="Enter Password" required>
+                <div class="checkbox">
+                    <input type="checkbox" id="signup checkbox">
+                    <label for="signup checkbox">I agree to all terms & conditions</label>
+                </div>
+                <input type="submit" id="Signup">
+            </form>
+        </div>
+        <div class="login">
+            <h2>Login</h2>
+            <form action="#">
+                <input type="email" id="Email" placeholder="Email address" required>
+                <input type="password" id="Password" placeholder="Password" required>
+                <a href="#">Forgot password?</a>
+                <input type="submit" id="Login">
+            </form>
+        </div>
+    </section>
+    <script>
+        const con = document.querySelector(".con"),
+            signup = document.querySelector(".signup "),
+            login = document.querySelector(".login ");
+        login.addEventListener("click", () => {
+            con.classList.add("active");
+        });
+        signup.addEventListener("click", () => {
+            con.classList.remove("active");
+        });
+    </script>
+</body>
+
+</html>
