@@ -1,0 +1,11 @@
+{
+    "__comment": "Express Server Settings",
+    "domain": "http://localhost",
+    "port": 3000,
+
+    "__comment2": "MySQL Database Settings",
+    "host": "localhost",
+    "username": "root",
+    "password": "password",
+    "dbName": "Database_Name"
+}
