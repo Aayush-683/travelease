@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(session({
-    secret: config.sessionSecret,
+    secret: config.session_secret,
     resave: true,
     saveUninitialized: true
 }));
@@ -25,6 +25,6 @@ app.get('/', (req, res) => {
 
 // Start Server
 app.listen(port, () => {
-    let host = config.host;
+    let host = config.domain;
     console.log(`Server started on ${host}:${port}`);
 });
