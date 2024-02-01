@@ -1,51 +1,42 @@
 <!DOCTYPE html>
-<!-- Coding By CodingNepal - codingnepalweb.com -->
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <title>Login & Signup Form</title>
-    <link rel="stylesheet" href="./login-signup.css" />
-  </head>
-  <body>
-    <section class="wrapper">
-      <div class="form signup">
-        <header>Signup</header>
-        <form action="#">
-          <input type="text" placeholder="Full name" required />
-          <input type="text" placeholder="Email address" required />
-          <input type="password" placeholder="Password" required />
-          <div class="checkbox">
-            <input type="checkbox" id="signupCheck" />
-            <label for="signupCheck">I accept all terms & conditions</label>
-          </div>
-          <input type="submit" value="Signup" />
-        </form>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TravelEase - Authentication Portal</title>
+  <link rel="stylesheet" href="/css/login-signup.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="svg1">
+      <%- include('./svgs/paper-plane.svg') %>
+    </div>
+    <div class="svg2">
+      <%- include('./svgs/globe-marker.svg') %>
+    </div>
+    <div class="slider"></div>
+    <div class="btn">
+      <button class="login txt-white">Login</button>
+      <button class="signup">Signup</button>
+    </div>
+    <div class="form-section">
+      <div class="login-box">
+        <input type="email" class="email ele" name="email" placeholder="youremail@email.com">
+        <input type="password" class="password ele" name="pass" placeholder="password">
+        <button class="clkbtn txt-white">Login</button>
       </div>
-
-      <div class="form login">
-        <header>Login</header>
-        <form action="#">
-          <input type="text" placeholder="Email address" required />
-          <input type="password" placeholder="Password" required />
-          <a href="#">Forgot password?</a>
-          <input type="submit" value="Login" />
-        </form>
+      <div class="signup-box">
+        <input type="text" class="name ele" name="name" placeholder="Enter your full name">
+        <input type="email" class="email ele" name="email" placeholder="youremail@email.com">
+        <input type="password" class="password ele" name="pass" placeholder="password">
+        <input type="password" class="password ele" name="confirmPass" placeholder="Confirm password">
+        <button class="clkbtn txt-white">Signup</button>
       </div>
+    </div>
+  </div>
+  <script src="/js/login-signup.js"></script>
+</body>
 
-      <script>
-        const wrapper = document.querySelector(".wrapper"),
-          signupHeader = document.querySelector(".signup header"),
-          loginHeader = document.querySelector(".login header");
-
-        loginHeader.addEventListener("click", () => {
-          wrapper.classList.add("active");
-        });
-        signupHeader.addEventListener("click", () => {
-          wrapper.classList.remove("active");
-        });
-      </script>
-    </section>
-  </body>
 </html>
