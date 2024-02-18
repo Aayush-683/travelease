@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.banner {
+    background-image: url('../images/viraj-rajankar-FOlXFJqyqf8-unsplash.jpg');
+    /* Replace 'background-image.jpg' with the path to your image */
+    background-size: 100% 110%;
+    background-position: center;
+    padding: 3rem;
+    height: 75vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info {
+    width: 25rem;
+    color: white;
+}
+
+.info h3 {
+    font-size: 5rem;
+    font-weight: 600;
+}
+
+.info p {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.info2 {
+    display: grid;
+    grid-template-columns: 40% auto;
+    gap: 5rem;
+    padding: 3rem;
+}
+
+#hrteam_img {
+    height: 100%;
+    width: 100%;
+    border-radius: 10%;
+}
+
+/* .hrteam_info{
+    
+} */
+.hrteam_info h5{
+    font-size:3rem ;
+    padding-bottom: 1rem;
+}
+
+.get_started{
+    background-color: #BBA658;
+    height: 18vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+}
+.get_started p{
+    color: white;
+    margin-right: auto;
+    font-size: 2rem;
+}
+#get_started_btn{
+    background-color: #BBA658;
+    color: white;
+    padding: 20px;
+    border-radius: 30px;
+    border: white solid 1px;
+    font-size: 1rem;
+}
