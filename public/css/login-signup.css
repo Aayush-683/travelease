@@ -15,7 +15,8 @@ body {
   align-items: center;
   flex-direction: column;
   gap: 30px;
-  background-color: linear-gradient(to right, rgb(110, 216, 255), rgb(110, 91, 255)); /*  Fall Back */
+  background-color: linear-gradient(to right, rgb(110, 216, 255), rgb(110, 91, 255));
+  /*  Fall Back */
   background-image: url('/images/bg.jpg');
   background-size: cover;
   background-repeat: no-repeat;
@@ -40,7 +41,7 @@ header {
 }
 
 .container {
-  height: 600px;
+  height: auto;
   width: 500px;
   background-color: white;
   box-shadow: 8px 8px 20px rgb(128, 128, 128);
@@ -117,6 +118,12 @@ header {
   gap: 30px;
 }
 
+#signup:disabled {
+  background-image: linear-gradient(to right, #273b76, #5b3783);
+  color: rgb(77, 77, 77);
+  cursor: not-allowed;
+}
+
 .ele {
   height: 60px;
   width: 400px;
@@ -165,10 +172,27 @@ header {
   animation: pop-in-rotate 0.5s ease-in-out forwards;
 }
 
+.view-pass {
+  position: absolute;
+  top: 50%;
+  right: 75px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 25px;
+  border: none;
+  background-color: transparent;
+  color: #a0a0a0;
+}
+
+.view-pass:focus {
+  outline: none;
+}
+
 @keyframes pop-in {
   0% {
     transform: scale(0);
   }
+
   100% {
     transform: scale(1);
   }
@@ -178,10 +202,29 @@ header {
   0% {
     transform: scale(0) rotate(-79deg);
   }
+
   100% {
     transform: scale(1) rotate(19deg);
   }
 }
+
+.error {
+  display: flex;
+  width: auto;
+  align-items: center;
+  height: fit-content;
+  justify-content: center;
+  padding-top: 20px;
+  opacity: 1;
+
+  transition: opacity 0.5s ease-in-out;
+
+  p {
+    font-size: 20px;
+    font-weight: 400;
+  }
+}
+
 /* For Responsiveness of the page */
 
 @media screen and (max-width: 650px) {

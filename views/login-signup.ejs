@@ -21,20 +21,37 @@
       <button class="login txt-white">Login</button>
       <button class="signup">Signup</button>
     </div>
-    <div class="form-section">
-      <div class="login-box">
-        <input type="email" class="email ele" name="email" placeholder="youremail@email.com">
-        <input type="password" class="password ele" name="pass" placeholder="password">
-        <button class="clkbtn txt-white">Login</button>
+    <% if (error) { %>
+      <div class="error">
+        <p>
+          <%= error %>
+        </p>
       </div>
-      <div class="signup-box">
-        <input type="text" class="name ele" name="name" placeholder="Enter your full name">
-        <input type="email" class="email ele" name="email" placeholder="youremail@email.com">
-        <input type="password" class="password ele" name="pass" placeholder="password">
-        <input type="password" class="password ele" name="confirmPass" placeholder="Confirm password">
-        <button class="clkbtn txt-white">Signup</button>
-      </div>
-    </div>
+      <% } %>
+        <div class="form-section">
+          <div class="login-box">
+            <form class="login-box" action="/auth/login" method="post">
+              <input type="email" class="email ele" name="email" id="login-email" placeholder="user@travelease.com"
+                required>
+              <input type="password" class="password ele" name="pass" id="login-password" placeholder="password" required>
+              <button type="button" id="login-pass" style="right: 575px" class="view-pass">&#x1F441;</button>
+              <button type="submit" id="login" class="clkbtn txt-white">Login</button>
+            </form>
+          </div>
+          <div class="signup-box">
+            <form class="signup-box" action="/auth/signup" method="post">
+              <input type="text" class="name ele" name="name" id="fullName" placeholder="Your full name" required>
+              <input type="email" class="email ele" name="email" id="email" placeholder="user@travelease.com" required>
+              <input type="password" class="password ele" name="pass" id="password" placeholder="password" required>
+              <button type="button" id="signup-pass" class="view-pass">&#x1F441;</button>
+              <input type="password" class="password ele" name="confirmPass" id="confirmPassword"
+                placeholder="Confirm password" required>
+              <button type="button" id="signup-pass-confirm" style="top: 68% !important"
+                class="view-pass">&#x1F441;</button>
+              <button type="submit" id="signup" class="clkbtn txt-white">Signup</button>
+            </form>
+          </div>
+        </div>
   </div>
   <script src="/js/login-signup.js"></script>
 </body>
