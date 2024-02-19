@@ -5,7 +5,7 @@ const app = express();
 const config = require('./config.json');
 const port = config.port;
 const { QuickDB } = require('quick.db');
-const db = new QuickDB({ filePath: './database.json' });
+const db = new QuickDB({ filePath: './database.sqlite' });
 
 // Express Setup
 app.use(express.static('public'));
