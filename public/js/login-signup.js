@@ -55,7 +55,7 @@ password.addEventListener("keyup", () => {
     if (passwordRegex.test(passwordValue)) {
         password.setCustomValidity("");
     } else {
-        password.setCustomValidity("Password must contain at least 8 characters, including UPPER/lowercase and numbers");
+        password.setCustomValidity("Password must contain at least 8 characters, including UPPER, lowercase and numbers");
     }
 });
 

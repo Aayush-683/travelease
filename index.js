@@ -25,9 +25,13 @@ app.get('/', (req, res) => {
     if (!req.session.loggedIn) {
         return res.redirect('/auth');
     }
-    console.log(req.session);
     res.render('index', { name: req.session.name, loggedIn: req.session.loggedIn });
 });
+
+app.get('/about', (req, res) => {
+    res.render('aboutus');
+})
+
 app.get('/auth', (req, res) => {
     res.render('login-signup', { error: false });
 });
@@ -47,7 +51,6 @@ app.post('/auth/login', async (req, res) => {
     let emailPass = Buffer.from(emailChk.password, 'base64').toString();
     // Compare Passwords
     if (emailPass !== password) {
-        console.log(emailPass, password);
         return res.render('login-signup', { error: "Invalid Password" });
     }
     // Set Session
