@@ -4,7 +4,7 @@
   "description": "- Make sure Node is installed (https://nodejs.org/en/download/)\r - Make sure MySQL is installed (https://dev.mysql.com/downloads/installer/)\r - Make sure `config.json` is configured properly\r - Open Terminal in this project and run the following command for initial setup\r     + `npm install`\r - Run the following command to start the server\r     + `npm start`",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "echo Updating NPM Packages... (Press ctrl+c to exit) && npm install && cls && echo Starting Server... (Press ctrl+c to exit) && node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
