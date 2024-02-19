@@ -2,11 +2,5 @@
     "__comment": "Express Server Settings",
     "domain": "http://localhost",
     "port": 3000,
-    "session_secret": "YFDUBIEG#U^TIDBfuysTI*Wiwjds",
-
-    "__comment2": "MySQL Database Settings",
-    "host": "localhost",
-    "username": "root",
-    "password": "password",
-    "dbName": "Database_Name"
+    "session_secret": "YFDUBIEG#U^TIDBfuysTI*Wiwjds"
 }
