@@ -25,7 +25,6 @@ app.get('/', (req, res) => {
     if (!req.session.loggedIn) {
         return res.redirect('/auth');
     }
-    console.log(req.session);
     res.render('index', { name: req.session.name, loggedIn: req.session.loggedIn });
 });
 app.get('/auth', (req, res) => {
@@ -47,7 +46,6 @@ app.post('/auth/login', async (req, res) => {
     let emailPass = Buffer.from(emailChk.password, 'base64').toString();
     // Compare Passwords
     if (emailPass !== password) {
-        console.log(emailPass, password);
         return res.render('login-signup', { error: "Invalid Password" });
     }
     // Set Session
@@ -66,7 +64,6 @@ app.post('/auth/signup', async (req, res) => {
     if (password !== confirmPassword) {
         return res.render('login-signup', { error: "Passwords do not match" });
     }
-    console.log(email, fullName, password);
     // Convert Email to Lowercase and replace all dots with underscores
     email = email.toLowerCase();
     email = email.replace(/\./g, '_');
@@ -80,6 +77,11 @@ app.post('/auth/signup', async (req, res) => {
     // Save User Data
     await db.set(`accounts.${email}`, { fullName, password });
     res.render('login-signup', { error: "Account Created Successfully! Please Login" });
+});
+
+app.get('/auth/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
 });
 
 // 404 Route
