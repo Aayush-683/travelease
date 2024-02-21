@@ -27,6 +27,11 @@ app.get('/', (req, res) => {
     }
     res.render('index', { name: req.session.name, loggedIn: req.session.loggedIn });
 });
+
+app.get('/about', (req, res) => {
+    res.render('aboutus');
+})
+
 app.get('/auth', (req, res) => {
     res.render('login-signup', { error: false });
 });
