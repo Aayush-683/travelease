@@ -2,5 +2,10 @@
     "__comment": "Express Server Settings",
     "domain": "http://localhost",
     "port": 3000,
-    "session_secret": "YFDUBIEG#U^TIDBfuysTI*Wiwjds"
+    "session_secret": "YFDUBIEG#U^TIDBfuysTI*Wiwjds",
+
+    "__comment2": "Email Settings",
+    "emailSender": "no-reply@aayushnet.tech",
+    "emailUser": "aayushgoel05@gmail.com",
+    "emailPass": "jysv djow fqdl nbvw"
 }
