@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Account Details</title>
+    <link rel="stylesheet" href="/css/account.css">
+</head>
+
+<body>
+    <!-- Banner Image -->
+    <div class="banner">
+        <img src="banner-image.jpg" alt="Banner Image">
+    </div>
+
+    <!-- Profile Section -->
+    <div class="profile-section">
+        <!-- User Details -->
+        <div class="user-details">
+            <h2><%= req.session.fullName %></h2>
+            <p>Email: <%= req.session.email %></p>
+            <!-- Button to Verify Email -->
+            <% if (req.session.isEmailVerified) { %>
+                <button id="verify-email-btn disabled">
+                    Email Verified
+                </button>
+                <% } else { %>
+                <button id="verify-email-btn" onclick="sendVerificationCode()">
+                    Verify Email
+                </button>
+                <% } %>
+        </div>
+    </div>
+
+    <!-- Saved Pages Container -->
+    <div class="saved-pages-container">
+        <h3>Saved Pages</h3>
+        <!-- Display saved pages here -->
+        <div class="saved-page">
+            <p>Saved Page 1</p>
+        </div>
+        <div class="saved-page">
+            <p>Saved Page 2</p>
+        </div>
+        <!-- Add more saved pages as needed -->
+    </div>
+
+</body>
+
+</html>

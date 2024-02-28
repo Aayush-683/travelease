@@ -7,6 +7,7 @@ const port = config.port;
 const { QuickDB } = require('quick.db');
 const db = new QuickDB({ filePath: './database.sqlite' });
 const nodemailer = require('nodemailer');
+const searchImage = require('g-i-s');
 
 // Email Setup
 let transporter2 = nodemailer.createTransport({
@@ -62,46 +63,76 @@ app.get('/auth', (req, res) => {
     res.render('login-signup', { error: false });
 });
 
-// Email Verification Page Route
-app.get('/verify', (req, res) => {
-    if (req.session.loggedIn) {
+// My Account Page Route
+app.get('/me', (req, res) => {
+    if (!req.session.loggedIn) {
         return res.redirect('/');
     }
-    res.render('verify', { error: false });
+    res.render('account', { error: false, req: req });
 });
 
-// Email Verification Post Route
-app.post('/auth/verify', async (req, res) => {
+// Email Verification Page Route
+app.get('/me/verifymail', async (req, res) => {
     if (!req.session.loggedIn) {
-        return res.redirect('/auth');
+        return res.redirect('/');
     }
-    let email = req.body.email;
-    // Convert Email to Lowercase and replace all dots with underscores
-    email = email.toLowerCase();
-    email = email.replace(/\./g, '_');
+    let email = req.session.email;
+    let code = req.query.code;
     // Check if Email Exists
-    let emailChk = await db.get(`accounts.${email}`);
+    let emailChk = db.get(`accounts.${email}`);
     if (!emailChk) {
-        return res.render('verify', { error: "Email does not exist! Please Signup Instead" });
+        return res.render('account', { error: "Email does not exist! Please Signup Instead" });
     }
     // Check if Email is already verified
     let emailVerified = await db.get(`accounts.${email}.verified`);
     if (emailVerified) {
-        return res.render('verify', { error: "Email is already verified!" });
+        return res.render('account', { error: "Email is already verified!" });
+    }
+    // Check if Code Exists
+    let emailCode = await db.get(`verification.${code}`);
+    if (!emailCode) {
+        return res.render('verify', { error: "Invalid Code!" });
+    }
+    // Check if Code Matches
+    email = email.replace(/\_/g, '.')
+    if (emailCode !== email) {
+        return res.render('verify', { error: "Invalid Code!" });
+    }
+    // Set Email to Verified
+    await db.set(`accounts.${email}.verified`, true);
+    await db.delete(`verification.${code}`);
+    // Update Session
+    req.session.verfiedMail = true;
+    res.render('account', { error: "Email Verified Successfully!" });
+});
+
+// Email Verification Post Route
+app.post('/auth/verify_email', async (req, res) => {
+    if (!req.session.loggedIn) {
+        return res.redirect('/auth');
+    }
+    let email = req.session.email;
+    // Check if Email Exists
+    let emailChk = await db.get(`accounts.${email}`);
+    if (!emailChk) {
+        return res.render('account', { error: "Email does not exist! Please Signup Instead" });
+    }
+    // Check if Email is already verified
+    let emailVerified = await db.get(`accounts.${email}.verified`);
+    if (emailVerified) {
+        return res.render('account', { error: "Email is already verified!" });
     }
     // Generate Random Code
     let code = await generateCode();
     email = email.replace(/\_/g, '.')
-    // Save Code
-    await db.set(`verification.${code}`, email);
     // Send Verification Email
     await sendVerificationEmail(email, code);
+    await db.set(`verification.${code}`, email);
     res.render('verify', { error: "Verification Email Sent!" });
 });
 
 // Login Post Route
 app.post('/auth/login', async (req, res) => {
-    // Check if user is already logged in
     if (req.session.loggedIn) {
         return res.redirect('/');
     }
@@ -126,6 +157,7 @@ app.post('/auth/login', async (req, res) => {
     req.session.email = email;
     req.session.name = firstName;
     req.session.loggedIn = true;
+    req.session.verifiedMail = emailChk.verified;
     res.redirect('/');
 });
 
@@ -151,17 +183,16 @@ app.post('/auth/signup', async (req, res) => {
     }
     // Encrypt Password
     password = Buffer.from(password).toString('base64');
-    // Verification Code
-    let code = await generateCode();
-    email = email.replace(/\_/g, '.')
-    // Save Verification Code
-    await db.set(`verification.${code}`, email);
-    // Send Verification Email
-    await sendVerificationEmail(email, code);
-    // Set Verified to False
     let verified = false;
     // Save User Data
     await db.set(`accounts.${email}`, { fullName, password, verified });
+    // Verification Code
+    let code = await generateCode();
+    email = email.replace(/\_/g, '.')
+    // Send Verification Email
+    await sendVerificationEmail(email, code);
+    await db.set(`verification.${code}`, email);
+    // Set Verified to False
     res.render('login-signup', { error: "Account Created Successfully! Please Login" });
 });
 
@@ -223,11 +254,15 @@ async function sendVerificationEmail(email, code) {
             <h1>Email Verification</h1>
             <p class="code"> Your verification code is: <b class="codeblock">${code}</b></p>
             <p>Please click the button below to verify your email</p>
-            <a href="${config.domain}/verify" class="button">Verify Email</a>
+            <a href="${config.domain}/me/verifymail" class="button">Verify Email</a>
         </div>
         `
     };
-    await transporter2.sendMail(mailOptions);
+    try {
+        await transporter2.sendMail(mailOptions);
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 // Random unique code generator
@@ -243,5 +278,17 @@ async function generateCode() {
         return newCode;
     } else {
         return code;
+    }
+}
+
+// Image Search Function
+async function searchImageByQuery(query) {;
+    searchImage(query, logResults);
+    function logResults(error, results) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log(JSON.stringify(results[0].url));
+        }
     }
 }
