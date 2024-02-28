@@ -72,8 +72,8 @@ app.get('/verify', (req, res) => {
 
 // Email Verification Post Route
 app.post('/auth/verify', async (req, res) => {
-    if (req.session.loggedIn) {
-        return res.redirect('/');
+    if (!req.session.loggedIn) {
+        return res.redirect('/auth');
     }
     let email = req.body.email;
     // Convert Email to Lowercase and replace all dots with underscores
@@ -91,6 +91,7 @@ app.post('/auth/verify', async (req, res) => {
     }
     // Generate Random Code
     let code = await generateCode();
+    email = email.replace(/\_/g, '.')
     // Save Code
     await db.set(`verification.${code}`, email);
     // Send Verification Email
@@ -152,6 +153,7 @@ app.post('/auth/signup', async (req, res) => {
     password = Buffer.from(password).toString('base64');
     // Verification Code
     let code = await generateCode();
+    email = email.replace(/\_/g, '.')
     // Save Verification Code
     await db.set(`verification.${code}`, email);
     // Send Verification Email
