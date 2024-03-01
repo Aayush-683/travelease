@@ -8,6 +8,9 @@ const { QuickDB } = require('quick.db');
 const db = new QuickDB({ filePath: './database.sqlite' });
 const nodemailer = require('nodemailer');
 const searchImage = require('g-i-s');
+const { Hercai } = require('hercai');
+const herc = new Hercai();
+const fs = require('fs');
 
 // Email Setup
 let transporter2 = nodemailer.createTransport({
@@ -161,6 +164,25 @@ app.post('/auth/login', async (req, res) => {
     res.redirect('/');
 });
 
+app.get('/gen/itinerary', (req, res) => {
+    res.render('itinerary', { itinerary: false, req: req, error: false });
+});
+
+app.post('/gen/itinerary', async (req, res) => {
+    let days = req.body.days;
+    let place = `${req.body.city}, ${req.body.country}.`
+    let members = req.body.members;
+    let budget = req.body.budget;
+    let generated = await generateItinerary(days, place, members, budget);
+    if (generated === "Error") {
+        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary" });
+    }
+    // convert text to json
+    generated = JSON.parse(generated);
+    let itinerary = generated.itinerary;
+    res.render('itinerary', { itinerary: itinerary, req: req, error: false });
+});
+
 // Signup Post Route
 app.post('/auth/signup', async (req, res) => {
     if (req.session.loggedIn) {
@@ -282,7 +304,8 @@ async function generateCode() {
 }
 
 // Image Search Function
-async function searchImageByQuery(query) {;
+async function searchImageByQuery(query) {
+    ;
     searchImage(query, logResults);
     function logResults(error, results) {
         if (error) {
@@ -291,4 +314,20 @@ async function searchImageByQuery(query) {;
             console.log(JSON.stringify(results[0].url));
         }
     }
+}
+
+async function generateItinerary(days, place, members, budget) {
+    let prompt = fs.readFileSync('prompt.txt', 'utf8');
+    prompt = prompt.replace("AAAA", days);
+    prompt = prompt.replace("BBBB", place);
+    prompt = prompt.replace("CCCC", budget);
+    prompt = prompt.replace("DDDD", members);
+    let response;
+    try {
+        response = await herc.question({ model: "v3", content: prompt });
+    } catch (err) {
+        console.log(err);
+        return "Error";
+    }
+    return response.reply;
 }
