@@ -58,6 +58,11 @@ app.get('/about', (req, res) => {
     res.render('aboutus');
 })
 
+//itinerary display
+app.get('/itinerary', (req, res) => {
+    res.render('itinerary2');
+})
+
 // Authentication Page Route
 app.get('/auth', (req, res) => {
     if (req.session.loggedIn) {
