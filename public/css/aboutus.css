@@ -50,9 +50,9 @@ body {
     border-radius: 10%;
 }
 
-/* .hrteam_info{
-    
-} */
+.hrteam_info{
+    font-size: 1.2rem;
+}
 .hrteam_info h5{
     font-size:3rem ;
     padding-bottom: 1rem;
@@ -71,6 +71,9 @@ body {
     border-radius: 10%;
 }
 
+.hrstory_info{
+    font-size: 1.2rem;
+}
 .hrstory_info h5{
     font-size:3rem ;
     padding-bottom: 1rem;
