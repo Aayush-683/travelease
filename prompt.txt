@@ -158,8 +158,8 @@
 }
 
 See the above itinerary? Generate a similar one but for AAAA days, Total budget is CCCC, Total members are DDDD. They are arriving at BBBB.
-Provide different locations for each day.
-Give upto 5 activities for the day. The activities should be within the budget and suitable for the number of members.
+Provide different sub locations for each day.
+Give 3-5 activities for the day. The activities should be within the budget and suitable for the number of members.
 Make sure the accommodation options are within the budget and suitable for the number of members and the location. Not too far and not more than 2 accommodations per location.
 Give 2-3 restaurants for each location with the price range and cuisine. The restaurants should be within the budget and suitable for the number of members. 
 ONLY SEND THE ITINERARY JSON OBJECT AS THE ANSWER. NO NEED TO SEND ANYTHING ELSE. JUST THE JSON OBJECT.

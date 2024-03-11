@@ -310,7 +310,6 @@ async function generateCode() {
 
 // Image Search Function
 async function searchImageByQuery(query) {
-    ;
     searchImage(query, logResults);
     function logResults(error, results) {
         if (error) {
