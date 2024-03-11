@@ -11,6 +11,9 @@ const searchImage = require('g-i-s');
 const { Hercai } = require('hercai');
 const herc = new Hercai();
 const fs = require('fs');
+const { getWeather } = require("weathers-watch");
+const { G4F } = require('g4f');
+const g4f = new G4F();
 
 // Email Setup
 let transporter2 = nodemailer.createTransport({
@@ -175,16 +178,58 @@ app.get('/gen/itinerary', (req, res) => {
 
 app.post('/gen/itinerary', async (req, res) => {
     let days = req.body.days;
-    let place = `${req.body.city}, ${req.body.country}.`
+    let city = req.body.city;
+    let country = req.body.country;
+    let currency = req.body.currency;
+    let place = `${city}, ${country}.`;
     let members = req.body.members;
     let budget = req.body.budget;
-    let generated = await generateItinerary(days, place, members, budget);
+    if (members < 1) {
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Number of Members" });
+    } else if (days < 1) {
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Number of Days" });
+    } else if (budget < 1) {
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Budget" });
+    } else if (!city || !country || !currency) {
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Place" });
+    }
+    // Generate Itinerary
+    let cost = `${budget} ${currency}`;
+    let generated = await generateItinerary(days, place, members, cost);
     if (generated === "Error") {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "There was an error generating the itinerary, please try again later" });
+    } else if (generated === "Rate limit exceeded") {
+        return res.render('itinerary', { itinerary: false, req: req, error: "Server Busy! Please Try Again in a Few Minutes" });
+    } else if (!generated) {
+        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary..." });
     }
     // convert text to json
-    generated = JSON.parse(generated);
+    try {
+        generated = JSON.parse(generated);
+    } catch (err) {
+        console.log(generated);
+        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary" });
+    }
     let itinerary = generated.itinerary;
+    // Generate Image for each accommodation and restaurant
+    for (let i = 0; i < itinerary.length; i++) {
+        let accomodations = itinerary[i].accommodations;
+        let restaurants = itinerary[i].restaurants;
+        for (let j = 0; j < accomodations.length; j++) {
+            let name = accomodations[j].name;
+            let image = await searchImageByQuery(name);
+            itinerary[i].accommodations[j].image = image;
+        }
+        for (let k = 0; k < restaurants.length; k++) {
+            let name = restaurants[k].name;
+            let image = await searchImageByQuery(name);
+            itinerary[i].restaurants[k].image = image;
+        }
+    }
+    // Get Weather Data
+    // let weather = await getWeatherData(place);
+    // itinerary.weather = weather;
+    // Render Itinerary
     res.render('itinerary', { itinerary: itinerary, req: req, error: false });
 });
 
@@ -310,16 +355,34 @@ async function generateCode() {
 
 // Image Search Function
 async function searchImageByQuery(query) {
-    searchImage(query, logResults);
-    function logResults(error, results) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log(JSON.stringify(results[0].url));
-        }
-    }
+    let si = false;
+    si = await new Promise((resolve, reject) => {
+        searchImage(query, async (err, results) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(results[0].url);
+            }
+        });
+    });
+    return si;
 }
 
+// Fetch weather function
+async function getWeatherData(city, country) {
+    let weatherData = await getWeather(city, country);
+    // Clean Weather Data
+    let weather = {
+        temperature: weatherData.currentWeather.temperature,
+        humidity: weatherData.currentWeather.humidity,
+        wind_speed: weatherData.currentWeather.wind,
+        dew_point: weatherData.currentWeather.dewPoint,
+        forecast: weatherData.forecastSummary
+    }
+    return weather;
+}
+
+// Itinerary Generation Function
 async function generateItinerary(days, place, members, budget) {
     let prompt = fs.readFileSync('prompt.txt', 'utf8');
     prompt = prompt.replace("AAAA", days);
@@ -328,10 +391,17 @@ async function generateItinerary(days, place, members, budget) {
     prompt = prompt.replace("DDDD", members);
     let response;
     try {
-        response = await herc.question({ model: "v3", content: prompt });
+        const messages = [
+            {
+                role: "system",
+                content: prompt
+            }
+        ];
+        response = await g4f.chatCompletion(messages)
     } catch (err) {
         console.log(err);
         return "Error";
     }
-    return response.reply;
+    // console.log(response)
+    return response;
 }

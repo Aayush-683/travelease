@@ -54,20 +54,21 @@
     </style>
   </head>
   <body>
-    <% if (error) { %>
-        <p><%= error %></p>
-    <% } %>
-    <% if (!itinerary) { %>
+      <% if (!itinerary) { %>
         <form action="/gen/itinerary" method="post" onsubmit="return showLoading()" id="itinerary-form">
-            <input type="number" name="days" placeholder="Enter number of days" />
-            <input type="number" name="budget" placeholder="Enter budget" />
-            <input type="number" name="members" placeholder="Enter number of members" />
-            <input type="text" name="city" placeholder="Enter city" />
-            <input type="text" name="country" placeholder="Enter country" />
+            <% if (error) { %>
+                <p><%= error %></p>
+            <% } %>
+            <input type="number" name="days" placeholder="Enter number of days" max="7" required/>
+            <input type="number" name="budget" placeholder="Enter budget" max="9999999" required/>
+            <input type="text" name="currency" placeholder="Enter currency" maxlength="3" required/>
+            <input type="number" name="members" placeholder="Enter number of members" max="20" required/>
+            <input type="text" name="city" placeholder="Enter city" maxlength="20" required/>
+            <input type="text" name="country" placeholder="Enter country" maxlength="10" required/>
             <button type="submit">Generate Itinerary</button>
         </form>
         <div id="loading-message">Loading the itinerary...</div>
-    <% } else { %>
+        <% } else { %>
         <h2>Here is your itinerary:</h1>
         <% for (let i = 0; i < itinerary.length; i++) { %>
             <h3>Day: <%= itinerary[i].day %></h3>
@@ -84,6 +85,9 @@
                     <li>Cuisine: <%= itinerary[i].restaurants[j].cuisine %></li>
                     <li>Price Range: <%= itinerary[i].restaurants[j].price_range %></li>
                     <li>Speciality: <%= itinerary[i].restaurants[j].speciality %></li>
+                    <li>
+                        <img src="<%= itinerary[i].restaurants[j].image %>" alt="<%= itinerary[i].restaurants[j].name %>" width="200" />
+                    </li>
                 </ul>
             <% } %>
             <p>Accommodations:</p>
@@ -94,6 +98,9 @@
                     <li>Location: <%= itinerary[i].accommodations[k].location %></li>
                     <li>Price Range: <%= itinerary[i].accommodations[k].price_range %></li>
                     <li>Description: <%= itinerary[i].accommodations[k].description %></li>
+                    <li>
+                        <img src="<%= itinerary[i].accommodations[k].image %>" alt="<%= itinerary[i].accommodations[k].name %>" width="200" />
+                    </li>
                 </ul>
             <% } %>
             <hr>
@@ -101,13 +108,10 @@
     <% } %>
     <script>
         function showLoading() {
-        // Hide the form
-        document.getElementById("itinerary-form").style.display = "none";
-        // Show the loading message
-        document.getElementById("loading-message").style.display = "block";
-        // Prevent the form from submitting
-        return true;
-      }
+        document.getElementById("itinerary-form").style.display = "none"; // Hide the form
+        document.getElementById("loading-message").style.display = "block"; // Show the loading message
+        return true; // Continue with the form submission (return false to cancel the submission)
+    }
     </script>
   </body>
 </html>
