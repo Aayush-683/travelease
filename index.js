@@ -8,10 +8,9 @@ const { QuickDB } = require('quick.db');
 const db = new QuickDB({ filePath: './database.sqlite' });
 const nodemailer = require('nodemailer');
 const searchImage = require('g-i-s');
-const { Hercai } = require('hercai');
-const herc = new Hercai();
 const fs = require('fs');
-const { getWeather } = require("weathers-watch");
+const Weather = require("@tinoschroeter/weather-js");
+const weather = new Weather();
 const { G4F } = require('g4f');
 const g4f = new G4F();
 
@@ -227,10 +226,17 @@ app.post('/gen/itinerary', async (req, res) => {
         }
     }
     // Get Weather Data
-    // let weather = await getWeatherData(place);
-    // itinerary.weather = weather;
+    let w = await getWeatherData(city, country);
+    let weather_return = "Error";
+    if (w === "Error") {
+        weather_return = "Error Fetching Weather Data";
+    } else if (!w) {
+        weather_return = "Error Fetching Weather Data";
+    } else {
+        weather_return = w;
+    }
     // Render Itinerary
-    res.render('itinerary', { itinerary: itinerary, req: req, error: false });
+    res.render('itinerary', { itinerary: itinerary, req: req, error: false, weather: weather_return });
 });
 
 // Signup Post Route
@@ -370,16 +376,39 @@ async function searchImageByQuery(query) {
 
 // Fetch weather function
 async function getWeatherData(city, country) {
-    let weatherData = await getWeather(city, country);
-    // Clean Weather Data
-    let weather = {
-        temperature: weatherData.currentWeather.temperature,
-        humidity: weatherData.currentWeather.humidity,
-        wind_speed: weatherData.currentWeather.wind,
-        dew_point: weatherData.currentWeather.dewPoint,
-        forecast: weatherData.forecastSummary
+    let place = `${city}, ${country}`;
+    let www = false;
+    let weatherData;
+    try {
+        weatherData = await weather.find({
+            search: place,
+            degreeType: "C",
+        });
+    } catch (err) { 
+        console.log(err);
+        return "Error";
     }
-    return weather;
+    www = {
+        temp: weatherData.current.temperature,
+        desc: weatherData.current.skytext,
+        humidity: weatherData.current.humidity,
+        wind: weatherData.current.winddisplay,
+        image: weatherData.current.imageUrl,
+        forecase: []
+    }
+    await new Promise((resolve, reject) => {
+        for (let i = 0; i < weatherData.forecast.length; i++) {
+            let forecast = {
+                day: weatherData.forecast[i].day,
+                low: weatherData.forecast[i].low,
+                high: weatherData.forecast[i].high,
+                desc: weatherData.forecast[i].skytextday
+            }
+            www.forecase.push(forecast);
+        }
+        resolve();
+    });
+    return www;
 }
 
 // Itinerary Generation Function
