@@ -227,11 +227,11 @@ app.post('/gen/itinerary', async (req, res) => {
     }
     // Get Weather Data
     let w = await getWeatherData(city, country);
-    let weather_return = "Error";
+    let weather_return = false;
     if (w === "Error") {
-        weather_return = "Error Fetching Weather Data";
+        weather_return = false;
     } else if (!w) {
-        weather_return = "Error Fetching Weather Data";
+        weather_return = false;
     } else {
         weather_return = w;
     }
@@ -388,23 +388,24 @@ async function getWeatherData(city, country) {
         console.log(err);
         return "Error";
     }
+    console.log(weatherData)
     www = {
-        temp: weatherData.current.temperature,
-        desc: weatherData.current.skytext,
-        humidity: weatherData.current.humidity,
-        wind: weatherData.current.winddisplay,
-        image: weatherData.current.imageUrl,
-        forecase: []
+        temp: weatherData[0].current.temperature,
+        desc: weatherData[0].current.skytext,
+        humidity: weatherData[0].current.humidity,
+        wind: weatherData[0].current.winddisplay,
+        image: weatherData[0].current.imageUrl,
+        forecast: []
     }
     await new Promise((resolve, reject) => {
-        for (let i = 0; i < weatherData.forecast.length; i++) {
+        for (let i = 0; i < weatherData[0].forecast.length; i++) {
             let forecast = {
-                day: weatherData.forecast[i].day,
-                low: weatherData.forecast[i].low,
-                high: weatherData.forecast[i].high,
-                desc: weatherData.forecast[i].skytextday
+                day: weatherData[0].forecast[i].day,
+                low: weatherData[0].forecast[i].low,
+                high: weatherData[0].forecast[i].high,
+                desc: weatherData[0].forecast[i].skytextday
             }
-            www.forecase.push(forecast);
+            www.forecast.push(forecast);
         }
         resolve();
     });
@@ -431,6 +432,6 @@ async function generateItinerary(days, place, members, budget) {
         console.log(err);
         return "Error";
     }
-    // console.log(response)
+    console.log(response)
     return response;
 }

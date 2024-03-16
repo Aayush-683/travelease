@@ -70,6 +70,21 @@
         <div id="loading-message">Loading the itinerary...</div>
         <% } else { %>
         <h2>Here is your itinerary:</h1>
+        <% if (weather) { %>
+            <h3>Weather: <%= weather.desc %></h3>
+            <h3>Temperature: <%= weather.temp %>°C</h3>
+            <h3>Humidity: <%= weather.humidity %>%</h3>
+            <h3>Wind Speed: <%= weather.wind %>m/s</h3>
+            <h3>Image: <%= weather.image %></h3>
+            <% for (let i = 0; i < weather.forecast.length; i++) { %>
+                <h3>Day <%= weather.forecast[i].day %></h3>
+                <ul>
+                    <li>High: <%= weather.forecast[i].high %>°C</li>
+                    <li>Low: <%= weather.forecast[i].low %>°C</li>
+                    <li>Weather: <%= weather.forecast[i].desc %></li>
+                </ul>
+            <% } %>
+        <% } %>
         <% for (let i = 0; i < itinerary.length; i++) { %>
             <h3>Day: <%= itinerary[i].day %></h3>
             <ul>
@@ -84,7 +99,7 @@
                     <li>Location: <%= itinerary[i].restaurants[j].location %></li>
                     <li>Cuisine: <%= itinerary[i].restaurants[j].cuisine %></li>
                     <li>Price Range: <%= itinerary[i].restaurants[j].price_range %></li>
-                    <li>Speciality: <%= itinerary[i].restaurants[j].speciality %></li>
+                    <li>Speciality: <%= itinerary[i].restaurants[j].specialty %></li>
                     <li>
                         <img src="<%= itinerary[i].restaurants[j].image %>" alt="<%= itinerary[i].restaurants[j].name %>" width="200" />
                     </li>
