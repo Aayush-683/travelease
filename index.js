@@ -54,6 +54,10 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
     res.render('index', { name: req.session.name, loggedIn: req.session.loggedIn });
 });
+//home page 
+app.get('/home', (req, res) => {
+    res.render('home', { name: req.session.name, loggedIn: req.session.loggedIn });
+});
 
 // About Us Page Route
 app.get('/about', (req, res) => {

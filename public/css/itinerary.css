@@ -1,35 +1,36 @@
-*{
+* {
     font-family: "Rubik", sans-serif;
-  font-optical-sizing: auto;
-  font-weight:bold;
-  font-style: normal;
-}
-body{
+    font-optical-sizing: auto;
+    font-weight: bold;
+    font-style: normal;
     margin: 0;
     padding: 0;
 }
 
 
-.banner_img{
+
+.banner_img {
     background: url(/images/ibrahim-asad-ZEfzyduAyJU-unsplash.jpg)no-repeat;
     height: 50vh;
-    background-size:110% 160%;
+    background-size: 110% 160%;
     background-position: center;
     margin: 0;
     padding: 1rem;
 }
 
-.nav{
+.nav {
     display: flex;
     flex-direction: row;
     gap: 20px;
 }
-.nav #Home{
+
+.nav #Home {
     margin-right: auto;
     text-decoration: none;
     color: white;
 }
-.nav a{
+
+.nav a {
     text-decoration: none;
     color: white;
 }
@@ -37,23 +38,25 @@ body{
 .banner_img p {
     color: white;
 }
-#date{
-    display:inline-block;
+
+#date {
+    display: inline-block;
     font-size: 8rem;
     font-weight: 500;
     padding-bottom: 3rem;
 }
-#month{
+
+#month {
     display: inline;
     font-size: 3rem;
     font-weight: 500;
-    
+
 }
 
-.nav2{
+.nav2 {
     display: flex;
     flex-direction: row;
-    justify-content:space-evenly;
+    justify-content: space-evenly;
     align-items: center;
     gap: 30px;
     height: 6vh;
@@ -61,77 +64,288 @@ body{
     padding: 3px;
     box-shadow: 5px 3px 3px #606060;
 }
-.nav2 a{
+
+.nav2 a {
     text-decoration: none;
 }
 
-.container2{
-    display: flex;
-    flex-direction: column;
-    gap: 10%;
-    align-items: center;
+
+
+.container2 {
+    height: 180vh;
+    max-height: auto;
+    display: none;
+
 }
 
-.restaurant-container {
+/* restaraunts*/
+.restaraunts {
+    background-color: antiquewhite;
+    height: 100%;
+    max-height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin: 50px auto;
+    padding: 20px 0;
+}
+
+.restaraunt-card {
+    height: 35vh;
     width: 90%;
-    height: 25vh;
     background-color: #fff;
-    border-radius: 8px;
-    overflow: hidden;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
     display: flex;
-    flex-direction: row;
 }
 
-.restaurant-image {
-    width: 20%;
-    height: 150px;
+.restaraunt-card:hover {
+    transform: translateY(-5px);
+}
+
+.restaraunt-card img {
+    width: 30%;
+    height: 100%;
     object-fit: cover;
+    border-radius: 10px 0 0;
 }
 
-.restaurant-info {
+.restaraunt-card-content {
+    width: 50%;
     padding: 15px;
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
+
 }
 
-.restaurant-name {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: auto;
+.restaraunt-card-content h3 {
+    font-size: 1.2rem;
 }
 
-.restaurant-review {
-    color: #888;
-    margin-bottom: 8px;
-}
-
-.restaurant-location {
-    font-style: italic;
-    color: #555;
-}
-.restaurant-info svg{
-    position: absolute;
-    width: 25px;
-    left: 60%;
-    
-}
-
-.price-container{
-    margin-left: auto;
-    width: 300px;
-    padding: 10px;
-}
-.price{
-    background-color: rgba(111, 195, 237, 0.367);
-    height: 100%;
-    width: 100%;
-    border-radius:20px;
-}
-.price p{
+.restaraunt-description {
     margin: 0;
-    text-align:left;
-    padding: 10px;
+}
+
+.restaraunt-rating {
+    color: #f8b700;
+    margin-top: auto;
+}
+
+.restaraunt-reviews {
+    color: #888;
+}
+
+.restaraunt-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #007bff;
+    padding: 20px;
+    margin-top: auto;
+    margin-left: auto;
+
+}
+
+/*container3*/
+.container3 {
+    height: 160vh;
+    display: none;
+}
+
+.activity {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+    margin: 50px auto;
+}
+
+.activity-card {
+    height: 60vh;
+    width: 40%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.activity-card:hover {
+    transform: translateY(-5px);
+}
+
+.activity-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+.activity-card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 20px;
+}
+
+.avtivity-card-content h3 {
+    font-size: 1.2rem;
+}
+
+
+.activity-price {
+    height: 100%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #007bff;
+    padding: 0 15px;
+    margin-top: auto;
+}
+
+/* container4*/
+.container4 {
+    height: 180vh;
+    max-height: auto;
+    display: none;
+}
+
+/* accomodation*/
+.accomodation {
+    background-color: antiquewhite;
+    height: 100%;
+    max-height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    margin: 50px auto;
+    padding: 20px 0;
+}
+
+.accomodation-card {
+    height: 35vh;
+    width: 90%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    display: flex;
+}
+
+.accomodation-card:hover {
+    transform: translateY(-5px);
+}
+
+.accomodation-card img {
+    width: 30%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px 0 0;
+}
+
+.accomodation-card-content {
+    width: 50%;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.accomodation-card-content h3 {
+    font-size: 1.2rem;
+}
+
+.accomodation-description {
+    margin: 0;
+}
+
+.accomodation-rating {
+    color: #f8b700;
+    margin-top: auto;
+}
+
+.accomodation {
+    color: #888;
+}
+
+.accomodation-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #007bff;
+    padding: 20px;
+    margin-top: auto;
+    margin-left: auto;
+
+}
+
+/*tourist attractions*/
+.container5 {
+    height: 180vh;
+    max-height: auto;
+    display: none;
+}
+
+.tourist {
+    background-color: bisque;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+.tourist-card {
+    height:auto;
+    max-height: auto;
+    width: 30%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.tourist-card:hover {
+    transform: translateY(-5px);
+}
+
+.tourist-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+.tourist-card-content {
+    padding: 15px;
+}
+
+.tourist-card-content h3 {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.tourist-read-more-content {
+    display: none;
+    padding: 15px 0;
+}
+
+.show-content .tourist-read-more-content {
+    display: block;
+}
+
+.read-more-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
 }
