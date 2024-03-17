@@ -2,6 +2,7 @@
     "__comment": "Express Server Settings",
     "domain": "http://localhost",
     "port": 3000,
+<<<<<<< Updated upstream
     "session_secret": "YFDUBIEG#U^TIDBfuysTI*Wiwjds",
 
     "open_ai_key": "sk-ant-api03-aVUQRaSUNEAcHtd03-cLvD43g1jgovlIsajXBlgNa9etgSsv6vQCg0A0PNMyxoS7D77EWSqjK81cJa5jEvTUhw-XehhIA",
@@ -11,3 +12,7 @@
     "emailUser": "aayushgoel05@gmail.com",
     "emailPass": "jysv djow fqdl nbvw"
 }
+=======
+    "session_secret": "YFDUBIEG#U^TIDBfuysTI*Wiwjds"
+}
+>>>>>>> Stashed changes
