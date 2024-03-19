@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Marcellus&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Marcellus", serif;
+            font-weight: 400;
+            font-style: bold;
+
+        }
+
+        .main-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url("grape.jpg");
+            background-size: cover;
+        }
+
+        .form-container {
+            padding: 50px;
+            background-color: rgba(255, 255, 255, 0.334);
+            width: 40%;
+            border-radius: 50px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        input {
+            height: 2rem;
+            box-sizing: border-box;  
+            border-radius: 20px;
+            border: black solid 1px;
+            background-color: #ffffff;
+            color: black;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        button {
+            height: 2rem;
+            border-radius: 20px;
+            border: none;
+            background-color: #112D16;
+            color: #CBBD73;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="form-container">
+            <form>
+                <input type="number" placeholder="Number of Days">
+                <input type="number" placeholder="Enter Budget">
+                <input type="text" placeholder="Enter Currency">
+                <input type="number" placeholder="No of members">
+                <input type="text" placeholder=" Enter city">
+                <input type="text" placeholder="Enter Country">
+                <button type="submit">Generate Itinerary</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
