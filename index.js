@@ -69,6 +69,11 @@ app.get('/itinerary', (req, res) => {
     res.render('itinerary2');
 })
 
+//contact us page
+app.get('/contactus', (req, res) => {
+    res.render('contactusindex');
+})
+    
 // Authentication Page Route
 app.get('/auth', (req, res) => {
     if (req.session.loggedIn) {
