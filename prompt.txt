@@ -96,4 +96,5 @@ Provide different sub locations for each day.
 Give 3-5 activities for the day. The activities should be within the budget and suitable for the number of members.
 Make sure the accommodation options are within the budget and suitable for the number of members and the location. Not too far and not more than 2 accommodations per location. The price range should be in the currency specified example (10$ - 100$).
 Give 2-3 restaurants for each location with the price range and cuisine. The restaurants should be within the budget and suitable for the number of members. 
+All the activities, accommodations, and restaurants should be unique and exist in real life.
 ONLY SEND THE ITINERARY JSON OBJECT AS THE ANSWER. NO NEED TO SEND ANYTHING ELSE. JUST THE JSON OBJECT.

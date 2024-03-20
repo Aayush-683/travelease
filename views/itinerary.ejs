@@ -121,7 +121,7 @@
           <h2>Restaurants</h2>
           <div class="restaraunts">
             <% for (let j=0; j < itinerary[i].restaurants.length; j++) { %>
-            <div class="restaraunt-card">
+            <div class="restaraunt-card" onclick="booking('restaraunt', '<%= itinerary[i].restaurants[j].name %>')">
               <img
                 src="<%= itinerary[i].restaurants[j].image %>"
                 alt="<%= itinerary[i].restaurants[j].name %>"
@@ -167,7 +167,7 @@
           <div class="accomodation">
             <h2>Accomodations</h2>
             <% for (let k=0; k < itinerary[i].accommodations.length; k++) { %>
-            <div class="accomodation-card">
+            <div class="accomodation-card" onclick="booking('accom', '<%= itinerary[i].accommodations[k].name %>')">
               <img
                 src="<%= itinerary[i].accommodations[k].image %>"
                 alt="<%= itinerary[i].accommodations[k].name %>"

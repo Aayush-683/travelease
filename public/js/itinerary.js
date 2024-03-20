@@ -44,33 +44,32 @@ for (var i = 0; i < containerDivs.length; i++) {
 
 // Function to show restaraunts
 function showRestaraunt(day) {
+    // Show restaraunt container div
+    document.getElementById("restaraunt_day_" + day).style.display = "block";
     // Hide all container divs
     document.getElementById("activity_day_" + day).style.display = "none";
     document.getElementById("acomm_day_" + day).style.display = "none";
     document.getElementById("weather_day_" + day).style.display = "none";
-    // Show restaraunt container div
-    document.getElementById("restaraunt_day_" + day).style.display =
-        "block";
 }
 
 // Function to show activities
 function showActivites(day) {
+    // Show activity container div
+    document.getElementById("activity_day_" + day).style.display = "block";
     // Hide all container divs
     document.getElementById("restaraunt_day_" + day).style.display = "none";
     document.getElementById("acomm_day_" + day).style.display = "none";
     document.getElementById("weather_day_" + day).style.display = "none";
-    // Show activity container div
-    document.getElementById("activity_day_" + day).style.display = "block";
 }
 
 // Function to show accomodations
 function showAccom(day) {
+    // Show accomodation container div
+    document.getElementById("acomm_day_" + day).style.display = "block";
     // Hide all container divs
     document.getElementById("restaraunt_day_" + day).style.display = "none";
     document.getElementById("activity_day_" + day).style.display = "none";
     document.getElementById("weather_day_" + day).style.display = "none";
-    // Show accomodation container div
-    document.getElementById("acomm_day_" + day).style.display = "block";
 }
 
 // Function to show weather
@@ -81,4 +80,11 @@ function showWeather(day) {
     document.getElementById("acomm_day_" + day).style.display = "none";
     // Show weather container div
     document.getElementById("weather_day_" + day).style.display = "block";
+}
+
+// Booking redirect function
+function booking(type, query) {
+    let url = type === "accom" ? `https://www.booking.com/searchresults.en-gb.html?ss=${query}` : `https://www.google.com/search?q=${query}`
+    // Open url in new tab
+    window.open(url, "_blank");
 }
