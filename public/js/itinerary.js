@@ -84,7 +84,7 @@ function showWeather(day) {
 
 // Booking redirect function
 function booking(type, query) {
-    let url = type === "accom" ? `https://www.booking.com/searchresults.en-gb.html?ss=${query}` : `https://www.google.com/search?q=${query}`
+    let url = (type == "accom") ? `https://www.booking.com/searchresults.en-gb.html?ss=${query}` : `https://www.google.com/search?q=${query}`;
     // Open url in new tab
     window.open(url, "_blank");
 }

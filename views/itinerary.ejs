@@ -121,7 +121,7 @@
           <h2>Restaurants</h2>
           <div class="restaraunts">
             <% for (let j=0; j < itinerary[i].restaurants.length; j++) { %>
-            <div class="restaraunt-card" onclick="booking('restaraunt', '<%= itinerary[i].restaurants[j].name %>')">
+            <div class="restaraunt-card" onclick="booking('rest', '<%= itinerary[i].restaurants[j].name %>')">
               <img
                 src="<%= itinerary[i].restaurants[j].image %>"
                 alt="<%= itinerary[i].restaurants[j].name %>"
