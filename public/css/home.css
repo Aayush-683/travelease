@@ -93,22 +93,23 @@ button {
 /*continer3*/
 
 .services {
-    height: 50vh;
+    height: 65vh;
     background: #FAF9F6;
-    padding: 50px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     gap: 50px;
 }
 
 .services-heading {
+    height: 20%;
     text-align: center;
     color: #F875AA;
 }
 
 .services-heading h3 {
     font-size: 2.5rem;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .services-heading p {
