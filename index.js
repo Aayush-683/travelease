@@ -197,7 +197,7 @@ app.get('/itinerary', (req, res) => {
     if (!loggedIn) {
         return res.redirect('/auth');
     }
-    res.render('itinerary', { itinerary: false, req: req, error: false });
+    res.render('itinerary', { itinerary: false, req: req, error: false, generated: false, weather: false });
 });
 
 // Generate Itinerary Post Route
@@ -243,6 +243,7 @@ app.post('/itinerary', async (req, res) => {
     let itinerary = generated.itinerary;
     // Generate Image for each accommodation and restaurant
     for (let i = 0; i < itinerary.length; i++) {
+        let activities = itinerary[i].activities;
         let accomodations = itinerary[i].accommodations;
         let restaurants = itinerary[i].restaurants;
         for (let j = 0; j < accomodations.length; j++) {
@@ -254,6 +255,11 @@ app.post('/itinerary', async (req, res) => {
             let name = restaurants[k].name;
             let image = await searchImageByQuery(name);
             itinerary[i].restaurants[k].image = image;
+        }
+        for (let l = 0; l < activities.length; l++) {
+            let name = activities[l];
+            let image = await searchImageByQuery(name);
+            itinerary[i].activities[l] = { name, image };
         }
     }
     // Get Weather Data
@@ -336,6 +342,7 @@ app.get('/itinerary/load', async (req, res) => {
     itinerary = JSON.parse(decodedString);
     // console.log(itinerary)
     itinerary = itinerary.itinerary;
+
     res.render('itinerary', { itinerary: itinerary, req: req, error: false, weather: false, generated: false });
 });
 

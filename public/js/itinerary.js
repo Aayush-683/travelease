@@ -20,8 +20,7 @@ for (var i = 1; i < dayDivs.length; i++) {
 function showPreviousDay() {
     console.log(currentDayIndex, dayDivs.length)
     dayDivs[currentDayIndex].style.display = "none";
-    currentDayIndex =
-        (currentDayIndex - 1 + dayDivs.length) % dayDivs.length; // Decrease index (if it's the first day, loop to the last day)
+    currentDayIndex = (currentDayIndex - 1 + dayDivs.length) % dayDivs.length; // Decrease index (if it's the first day, loop to the last day)
     dayDivs[currentDayIndex].style.display = "block";
 }
 

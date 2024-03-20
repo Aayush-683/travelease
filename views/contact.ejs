@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="X-UA-Compatible"
+      content="IE=edge"
+      <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>HASH TECHIE</title>
+    <link rel="stylesheet" href="/css/contactus.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <%- include('partials/nav') %>
+    <div class="container">
+      <div class="items">
+        <div class="contact">
+          <div class="first-text">Let's get in touch</div>
+          <div class="img-div">
+            <img src="/images/logo-image.jpg" alt="" class="image" />
+          </div>
+          <!-- <div class="social-links">
+                    <span class="secnd-text">Connect with us:</span>
+                    <ul class="social-media">
+                        <li><a href="#"><i class='bx bxl-facebook'></i></a></A></li>
+                        <li><a href="#"><i class='bx bxl-twitter'></i></a></A></li>
+                        <li><a href="#"><i class='bx bxl-youtube'></i></a></A></li>
+                        <li><a href="#"><i class='bx bxl-linkedin'></i></a></A></li>
+                    </ul>
+                </div> -->
+        </div>
+        <div class="submit-form">
+          <h4 class="third-text">Contact Us</h4>
+          <div class="form-conatiner">
+            <div class="input-box">
+              <input type="text" class="input" required />
+              <label for="">Name</label>
+            </div>
+            <div class="input-box">
+              <input type="email" class="input" required />
+              <label for="">Email</label>
+            </div>
+            <div class="input-box">
+              <input type="text" class="input" required />
+              <label for="">Subject</label>
+            </div>
+            <div class="input-box">
+              <textarea
+                name=""
+                class="input"
+                required
+                id="message"
+                cols="30"
+                rows="10"
+              ></textarea>
+              <label for="">Message</label>
+            </div>
+            <button class="btn" onclick="sendInfo()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%- include('partials/footer') %>
+    <script>
+      function sendInfo() {
+        let name = document.querySelector(
+          ".input-box:nth-child(1) input"
+        ).value;
+        let email = document.querySelector(
+          ".input-box:nth-child(2) input"
+        ).value;
+        let subject = document.querySelector(
+          ".input-box:nth-child(3) input"
+        ).value;
+        let message = document.querySelector(
+          ".input-box:nth-child(4) textarea"
+        ).value;
+
+        if (name === "" || email === "" || subject === "" || message === "") {
+          alert("Please fill in all the fields");
+          return false;
+        } else {
+          let mail = "support@aayushnet.tech";
+          let mailto_link =
+            "mailto:" + mail + "?subject=" + subject + "&body=" + message;
+          window.location.href = mailto_link;
+        }
+      }
+    </script>
+  </body>
+</html>
