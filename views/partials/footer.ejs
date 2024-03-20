@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Professional Footer</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+      .footer {
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .footer p {
+        margin: 0;
+      }
+      .footer a {
+        color: #fff;
+        text-decoration: none;
+        margin-right: 40px;
+      }
+      .footer .links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: left;
+      }
+      .footer .links li {
+        display: inline-block;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <footer class="footer">
+      <!-- Check if current url is /about -->
+      <% if (req.path === '/about') { %>
+      <a href="/home">Home</a>
+      <% } else { %>
+      <a href="/about">About</a>
+      <% } %>
+      <p>&copy; 2024 Your Company. All rights reserved.</p>
+      <% if (req.oath === '/contact') { %>
+      <a href="/home">Home</a>
+      <% } else { %>
+      <a href="/contact">Contact Us</a>
+      <% } %>
+    </footer>
+  </body>
+</html>

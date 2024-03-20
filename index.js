@@ -61,12 +61,12 @@ app.get('/home', (req, res) => {
 
 // About Us Page Route
 app.get('/about', (req, res) => {
-    res.render('aboutus');
+    res.render('aboutus', { req: req, error: false });
 })
 
 //contact us page
-app.get('/contactus', (req, res) => {
-    res.render('contactusindex');
+app.get('/contact', (req, res) => {
+    res.render('contact', { req: req, error: false });
 })
 
 // Authentication Page Route
@@ -117,6 +117,7 @@ app.post('/me/verifymail', async (req, res) => {
     if (emailCode !== email) {
         return res.render('account', { req: req, error: "Code Email Mismatch!", saved: saved });
     }
+    email = email.replace(/\./g, '_')
     // Set Email to Verified
     await db.set(`accounts.${email}.verified`, true);
     await db.delete(`verification.${code}`);

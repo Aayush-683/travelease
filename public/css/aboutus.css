@@ -25,6 +25,7 @@ body {
 .info {
     width: 25rem;
     color: white;
+    text-shadow: 4px 4px 4px black;
 }
 
 .info h3 {
@@ -50,14 +51,16 @@ body {
     border-radius: 10%;
 }
 
-.hrteam_info{
+.hrteam_info {
     font-size: 1.2rem;
 }
-.hrteam_info h5{
-    font-size:3rem ;
+
+.hrteam_info h5 {
+    font-size: 3rem;
     padding-bottom: 1rem;
 }
-.info3{
+
+.info3 {
     display: grid;
     grid-template-columns: 55% auto;
     gap: 5rem;
@@ -65,21 +68,22 @@ body {
     background-color: #f5f5f5;
 }
 
-#hrstory_img{
+#hrstory_img {
     height: 100%;
     width: 100%;
     border-radius: 10%;
 }
 
-.hrstory_info{
+.hrstory_info {
     font-size: 1.2rem;
 }
-.hrstory_info h5{
-    font-size:3rem ;
+
+.hrstory_info h5 {
+    font-size: 3rem;
     padding-bottom: 1rem;
 }
 
-.get_started{
+.get_started {
     background-color: #BBA658;
     height: 18vh;
     display: flex;
@@ -87,12 +91,14 @@ body {
     justify-content: center;
     padding: 3rem;
 }
-.get_started p{
+
+.get_started p {
     color: white;
     margin-right: auto;
     font-size: 2rem;
 }
-#get_started_btn{
+
+#get_started_btn {
     background-color: #BBA658;
     color: white;
     padding: 20px;
