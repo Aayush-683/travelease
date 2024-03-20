@@ -88,78 +88,12 @@
         },
       ],
     },
-    {
-      "day": 5,
-      "location": "Panaji (Goa's Capital)",
-      "activities": [],
-      "accommodations": [
-        {
-          "name": "",
-          "location": "",
-          "price_range": "",
-          "description": ""
-        },
-      ],
-      "restaurants": [
-        {
-          "name": "",
-          "location": "",
-          "cuisine": "",
-          "price_range": "",
-          "specialty": ""
-        },
-      ],
-    },
-    {
-      "day": 6,
-      "location": "Adventure Day - Dudhsagar Waterfalls",
-      "activities": [],
-      "accommodations": [
-        {
-          "name": "",
-          "location": "",
-          "price_range": "",
-          "description": ""
-        },
-      ],
-      "restaurants": [
-        {
-          "name": "",
-          "location": "",
-          "cuisine": "",
-          "price_range": "",
-          "specialty": ""
-        },
-      ],
-    },
-    {
-      "day": 7,
-      "location": "Relaxation Day",
-      "activities": [],
-      "accommodations": [
-        {
-          "name": "",
-          "location": "",
-          "price_range": "",
-          "description": ""
-        },
-      ],
-      "restaurants": [
-        {
-          "name": "",
-          "location": "",
-          "cuisine": "",
-          "price_range": "",
-          "specialty": ""
-        },
-      ],
-    },
   ],
 }
 
 See the above itinerary? Generate a similar one but for AAAA days, Total budget is CCCC, Total members are DDDD. They are arriving at BBBB.
 Provide different sub locations for each day.
 Give 3-5 activities for the day. The activities should be within the budget and suitable for the number of members.
-Make sure the accommodation options are within the budget and suitable for the number of members and the location. Not too far and not more than 2 accommodations per location.
+Make sure the accommodation options are within the budget and suitable for the number of members and the location. Not too far and not more than 2 accommodations per location. The price range should be in the currency specified example (10$ - 100$).
 Give 2-3 restaurants for each location with the price range and cuisine. The restaurants should be within the budget and suitable for the number of members. 
 ONLY SEND THE ITINERARY JSON OBJECT AS THE ANSWER. NO NEED TO SEND ANYTHING ELSE. JUST THE JSON OBJECT.

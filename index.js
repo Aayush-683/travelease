@@ -52,11 +52,11 @@ app.use((req, res, next) => {
 
 // Home Page Route
 app.get('/', (req, res) => {
-    res.render('index', { name: req.session.name, loggedIn: req.session.loggedIn });
+    res.redirect('/home');
 });
 //home page 
 app.get('/home', (req, res) => {
-    res.render('home', { name: req.session.name, loggedIn: req.session.loggedIn });
+    res.render('home', { req: req, error: false });
 });
 
 // About Us Page Route
@@ -64,65 +64,65 @@ app.get('/about', (req, res) => {
     res.render('aboutus');
 })
 
-//itinerary display
-app.get('/itinerary', (req, res) => {
-    res.render('itinerary2');
-})
-
 //contact us page
 app.get('/contactus', (req, res) => {
     res.render('contactusindex');
 })
-    
+
 // Authentication Page Route
 app.get('/auth', (req, res) => {
     if (req.session.loggedIn) {
         return res.redirect('/');
     }
-    res.render('login-signup', { error: false });
+    res.render('login-signup', { req: req, error: false });
 });
 
 // My Account Page Route
-app.get('/me', (req, res) => {
-    if (!req.session.loggedIn) {
-        return res.redirect('/');
-    }
-    res.render('account', { error: false, req: req });
-});
-
-// Email Verification Page Route
-app.get('/me/verifymail', async (req, res) => {
+app.get('/me', async (req, res) => {
     if (!req.session.loggedIn) {
         return res.redirect('/');
     }
     let email = req.session.email;
-    let code = req.query.code;
+    email = email.replace(/\./g, '_');
+    let saved = await db.get(`saved.${email}`) || [];
+    res.render('account', { req: req, error: false, saved: saved });
+});
+
+// Email Verification Page Route
+app.post('/me/verifymail', async (req, res) => {
+    if (!req.session.loggedIn) {
+        return res.redirect('/');
+    }
+    let email = req.session.email;
+    let code = req.body.code;
+    email = email.replace(/\./g, '_');
+    let saved = await db.get(`saved.${email}`) || [];
     // Check if Email Exists
     let emailChk = db.get(`accounts.${email}`);
     if (!emailChk) {
-        return res.render('account', { error: "Email does not exist! Please Signup Instead" });
+        return res.render('account', { req: req, error: "Email does not exist! Please Signup Instead", saved: saved });
     }
     // Check if Email is already verified
     let emailVerified = await db.get(`accounts.${email}.verified`);
     if (emailVerified) {
-        return res.render('account', { error: "Email is already verified!" });
+        return res.render('account', { req: req, error: "Email is already verified!", saved: saved });
     }
     // Check if Code Exists
     let emailCode = await db.get(`verification.${code}`);
     if (!emailCode) {
-        return res.render('verify', { error: "Invalid Code!" });
+        return res.render('account', { req: req, error: "Invalid Code!", saved: saved });
     }
     // Check if Code Matches
     email = email.replace(/\_/g, '.')
     if (emailCode !== email) {
-        return res.render('verify', { error: "Invalid Code!" });
+        return res.render('account', { req: req, error: "Code Email Mismatch!", saved: saved });
     }
     // Set Email to Verified
     await db.set(`accounts.${email}.verified`, true);
     await db.delete(`verification.${code}`);
     // Update Session
-    req.session.verfiedMail = true;
-    res.render('account', { error: "Email Verified Successfully!" });
+    req.session.verifiedMail = true;
+    res.render('account', { req: req, error: "Email Verified Successfully!", saved: saved });
 });
 
 // Email Verification Post Route
@@ -131,23 +131,32 @@ app.post('/auth/verify_email', async (req, res) => {
         return res.redirect('/auth');
     }
     let email = req.session.email;
+    email = email.replace(/\./g, '_');
+    let saved = await db.get(`saved.${email}`) || [];
     // Check if Email Exists
     let emailChk = await db.get(`accounts.${email}`);
     if (!emailChk) {
-        return res.render('account', { error: "Email does not exist! Please Signup Instead" });
+        return res.render('account', { req: req, error: "Email does not exist! Please Signup Instead", saved: saved });
     }
     // Check if Email is already verified
     let emailVerified = await db.get(`accounts.${email}.verified`);
     if (emailVerified) {
-        return res.render('account', { error: "Email is already verified!" });
+        return res.render('account', { req: req, error: "Email is already verified!", saved: saved });
+    }
+    // Delete Old Verification Codes
+    let oldCodes = await db.get(`verification`);
+    email = email.replace(/\_/g, '.')
+    for (let code in oldCodes) {
+        if (oldCodes[code] === email) {
+            await db.delete(`verification.${code}`);
+        }
     }
     // Generate Random Code
     let code = await generateCode();
-    email = email.replace(/\_/g, '.')
     // Send Verification Email
     await sendVerificationEmail(email, code);
     await db.set(`verification.${code}`, email);
-    res.render('verify', { error: "Verification Email Sent!" });
+    res.render('account', { req: req, error: "Verification Email Sent!", saved: saved });
 });
 
 // Login Post Route
@@ -163,28 +172,35 @@ app.post('/auth/login', async (req, res) => {
     // Check if Email Exists
     let emailChk = await db.get(`accounts.${email}`);
     if (!emailChk) {
-        return res.render('login-signup', { error: "Email does not exist! Please Signup Instead" });
+        return res.render('login-signup', { req: req, error: "Email does not exist! Please Signup Instead" });
     }
     // Decrypt Password
     let emailPass = Buffer.from(emailChk.password, 'base64').toString();
     // Compare Passwords
     if (emailPass !== password) {
-        return res.render('login-signup', { error: "Invalid Password" });
+        return res.render('login-signup', { req: req, error: "Invalid Password" });
     }
     // Set Session
     let firstName = emailChk.fullName.split(' ')[0];
-    req.session.email = email;
+    req.session.email = email.replace(/\_/g, '.');
     req.session.name = firstName;
     req.session.loggedIn = true;
     req.session.verifiedMail = emailChk.verified;
+    // console.log(req.session);
     res.redirect('/');
 });
 
-app.get('/gen/itinerary', (req, res) => {
+// Generate Itinerary Page Route
+app.get('/itinerary', (req, res) => {
+    let loggedIn = req.session.loggedIn;
+    if (!loggedIn) {
+        return res.redirect('/auth');
+    }
     res.render('itinerary', { itinerary: false, req: req, error: false });
 });
 
-app.post('/gen/itinerary', async (req, res) => {
+// Generate Itinerary Post Route
+app.post('/itinerary', async (req, res) => {
     let days = req.body.days;
     let city = req.body.city;
     let country = req.body.country;
@@ -200,6 +216,11 @@ app.post('/gen/itinerary', async (req, res) => {
         return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Budget" });
     } else if (!city || !country || !currency) {
         return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Place" });
+    }
+    // Check if currency is valid
+    let validCurrency = await checkCurrency(currency);
+    if (!validCurrency) {
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Currency" });
     }
     // Generate Itinerary
     let cost = `${budget} ${currency}`;
@@ -245,7 +266,76 @@ app.post('/gen/itinerary', async (req, res) => {
         weather_return = w;
     }
     // Render Itinerary
-    res.render('itinerary', { itinerary: itinerary, req: req, error: false, weather: weather_return });
+    res.render('itinerary', { itinerary: itinerary, req: req, error: false, weather: weather_return, generated: true });
+});
+
+// Save itinerary
+app.post('/itinerary/save', async (req, res) => {
+    let itinerary = req.body.itinerary;
+    let name = req.body.itineraryName;
+    if (!name || !itinerary || name.length > 20) {
+        return res.status(400).send("Invalid Request");
+    }
+    let email = req.session.email;
+    let loggedIn = req.session.loggedIn;
+    if (!loggedIn) {
+        return res.render('itinerary', { itinerary: false, req: req, error: "Please Login to Save an Itinerary" })
+    }
+    // Check if email is verified
+    email = email.replace(/\./g, '_');
+    let emailChk = await db.get(`accounts.${email}`);
+    if (!emailChk.verified) {
+        return res.render('itinerary', { itinerary: false, req: req, error: "Please Verify Your Email to Save an Itinerary" });
+    }
+    let saved = await db.get(`saved.${email}`) || [];
+    let count = saved.length;
+    // Check if name already exists
+    for (let i = 0; i < saved.length; i++) {
+        if (saved[i].name === name) {
+            return res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Name Already Exists" });
+        }
+    }
+    // Save itinerary to a file in storage folder
+    let file = `./storage/${email}_${count}.txt`;
+    fs.writeFileSync(file, itinerary, 'utf8');
+    saved.push({ name, file });
+    await db.set(`saved.${email}`, saved);
+    res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Saved Successfully!" });
+});
+
+// Load Saved Itinerary
+app.get('/itinerary/load', async (req, res) => {
+    let name = req.query.name;
+    let email = req.session.email;
+    let loggedIn = req.session.loggedIn;
+    if (!loggedIn) {
+        return res.redirect('/auth');
+    }
+    email = email.replace(/\./g, '_');
+    let saved = await db.get(`saved.${email}`) || [];
+    let file = false;
+    for (let i = 0; i < saved.length; i++) {
+        if (saved[i].name === name) {
+            file = saved[i].file;
+            break;
+        }
+    }
+    if (!file) {
+        return res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Not Found" });
+    }
+    // read file in single quotes
+    let itinerary
+    try {
+        itinerary = fs.readFileSync(file, 'utf8');
+    } catch (err) {
+        console.log(err);
+        return res.render('itinerary', { itinerary: false, req: req, error: "Error Loading Itinerary" });
+    }
+    let decodedString = itinerary.replace(/&#39;/g, "'");
+    itinerary = JSON.parse(decodedString);
+    // console.log(itinerary)
+    itinerary = itinerary.itinerary;
+    res.render('itinerary', { itinerary: itinerary, req: req, error: false, weather: false, generated: false });
 });
 
 // Signup Post Route
@@ -258,7 +348,7 @@ app.post('/auth/signup', async (req, res) => {
     let password = req.body.pass;
     let confirmPassword = req.body.confirmPass;
     if (password !== confirmPassword) {
-        return res.render('login-signup', { error: "Passwords do not match" });
+        return res.render('login-signup', { req: req, error: "Passwords do not match" });
     }
     // Convert Email to Lowercase and replace all dots with underscores
     email = email.toLowerCase();
@@ -266,7 +356,7 @@ app.post('/auth/signup', async (req, res) => {
     // Check if Email Exists
     let emailChk = await db.get(email);
     if (emailChk) {
-        return res.render('login-signup', { error: "Email already exists! Please Login Instead" });
+        return res.render('login-signup', { req: req, error: "Email already exists! Please Login Instead" });
     }
     // Encrypt Password
     password = Buffer.from(password).toString('base64');
@@ -280,7 +370,7 @@ app.post('/auth/signup', async (req, res) => {
     await sendVerificationEmail(email, code);
     await db.set(`verification.${code}`, email);
     // Set Verified to False
-    res.render('login-signup', { error: "Account Created Successfully! Please Login" });
+    res.render('login-signup', { req: req, error: "Account Created Successfully! Please Login" });
 });
 
 // Logout Route
@@ -341,7 +431,7 @@ async function sendVerificationEmail(email, code) {
             <h1>Email Verification</h1>
             <p class="code"> Your verification code is: <b class="codeblock">${code}</b></p>
             <p>Please click the button below to verify your email</p>
-            <a href="${config.domain}/me/verifymail" class="button">Verify Email</a>
+            <a href="${config.domain}/me" class="button">Verify Email</a>
         </div>
         `
     };
@@ -393,11 +483,10 @@ async function getWeatherData(city, country) {
             search: place,
             degreeType: "C",
         });
-    } catch (err) { 
+    } catch (err) {
         console.log(err);
         return "Error";
     }
-    console.log(weatherData)
     www = {
         temp: weatherData[0].current.temperature,
         desc: weatherData[0].current.skytext,
@@ -436,11 +525,21 @@ async function generateItinerary(days, place, members, budget) {
                 content: prompt
             }
         ];
-        response = await g4f.chatCompletion(messages)
+        response = await g4f.chatCompletion(messages);
     } catch (err) {
         console.log(err);
         return "Error";
     }
-    console.log(response)
+    // console.log(response)
     return response;
+}
+
+// Currency Check Function
+async function checkCurrency(currency) {
+    let valid = false;
+    let currencies = config.currencyCodes
+    if (currencies.includes(currency.toUpperCase())) {
+        valid = true;
+    }
+    return valid;
 }
