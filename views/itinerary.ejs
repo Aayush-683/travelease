@@ -4,61 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Generated Itinerary Page</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-        }
-        form {
-            border: 1px solid #ccc;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        input[type="number"],
-        input[type="text"],
-        button {
-            display: block;
-            margin-bottom: 10px;
-            width: 100%;
-            padding: 10px;
-            box-sizing: border-box;
-        }
-        button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        h1 {
-            text-align: center;
-        }
-        ul {
-            padding: 0;
-        }
-        li {
-            margin-bottom: 10px;
-        }
-        #loading-message {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/itineraryGen.css" />
+    <link rel="stylesheet" href="/css/pageloader.css" />
+    <link rel="stylesheet" href="/css/itinerary.css" />
   </head>
+
   <body>
-      <% if (!itinerary) { %>
-        <form action="/gen/itinerary" method="post" onsubmit="return showLoading()" id="itinerary-form">
-            <% if (error) { %>
-                <p><%= error %></p>
-            <% } %>
+    <% if (!itinerary) { %>
+    <!-- <form action="/gen/itinerary" method="post" onsubmit="return showLoading()" id="itinerary-form">
             <input type="number" name="days" placeholder="Enter number of days" max="7" required/>
             <input type="number" name="budget" placeholder="Enter budget" max="9999999" required/>
             <input type="text" name="currency" placeholder="Enter currency" maxlength="3" required/>
@@ -66,67 +19,295 @@
             <input type="text" name="city" placeholder="Enter city" maxlength="20" required/>
             <input type="text" name="country" placeholder="Enter country" maxlength="10" required/>
             <button type="submit">Generate Itinerary</button>
+        </form> -->
+    <div class="main-container">
+      <h1 id="genTitle">Generate your perfect itinerary</h1>
+      <% if (error) { %>
+      <p class="error"><%= error %></p>
+      <% } %>
+      <div class="form-container">
+        <form
+          action="/itinerary"
+          method="post"
+          id="itinerary-form"
+          onsubmit="return showLoading()"
+        >
+          <input
+            type="number"
+            name="days"
+            placeholder="Enter number of days"
+            max="7"
+            required
+          />
+          <input
+            type="number"
+            name="budget"
+            placeholder="Enter budget"
+            max="9999999"
+            required
+          />
+          <input
+            type="text"
+            name="currency"
+            placeholder="Enter currency"
+            minlength="3"
+            maxlength="3"
+            required
+          />
+          <input
+            type="number"
+            name="members"
+            placeholder="Enter number of members"
+            max="20"
+            required
+          />
+          <input
+            type="text"
+            name="city"
+            placeholder="Enter city"
+            maxlength="20"
+            required
+          />
+          <input
+            type="text"
+            name="country"
+            placeholder="Enter country"
+            maxlength="10"
+            required
+          />
+          <button type="submit">Generate Itinerary</button>
         </form>
-        <div id="loading-message">Loading the itinerary...</div>
-        <% } else { %>
-        <h2>Here is your itinerary:</h1>
-        <% if (weather) { %>
-            <h3>Weather: <%= weather.desc %></h3>
-            <h3>Temperature: <%= weather.temp %>°C</h3>
-            <h3>Humidity: <%= weather.humidity %>%</h3>
-            <h3>Wind Speed: <%= weather.wind %>m/s</h3>
-            <h3>Image: <%= weather.image %></h3>
-            <% for (let i = 0; i < weather.forecast.length; i++) { %>
-                <h3>Day <%= weather.forecast[i].day %></h3>
-                <ul>
-                    <li>High: <%= weather.forecast[i].high %>°C</li>
-                    <li>Low: <%= weather.forecast[i].low %>°C</li>
-                    <li>Weather: <%= weather.forecast[i].desc %></li>
-                </ul>
+      </div>
+      <div id="loading-img">
+        <div class="loader">
+          <div class="ring"></div>
+          <div class="ring"></div>
+          <div class="ring"></div>
+        </div>
+      </div>
+    </div>
+    <% } else { %> <% for (let i=0; i < itinerary.length; i++) { %>
+    <div class="day<%= itinerary[i].day %>">
+      <div class="parent">
+        <div class="banner_img">
+          <p id="date">Day <%= itinerary[i].day %></p>
+          <p id="month"><%= itinerary[i].location %></p>
+          <br />
+          <% if (itinerary.length> 1) { %>
+          <button onclick="showPreviousDay()">Previous</button>
+          <button onclick="showNextDay()">Next</button>
+          <% } %>
+          <% if (generated) { %>
+            <button class="save" onclick="saveItinerary()">Save</button>
+          <% } else { %>
+            <button class="save" onclick="goBack()">Go Back</button>
+            <script>
+              function goBack() {
+                window.location.href = "/me";
+              }
+            </script>
+          <% } %>
+        </div>
+      </div>
+      <div class="nav2">
+        <a onclick="showRestaraunt('<%= itinerary[i].day %>')">Restaurants</a>
+        <a onclick="showActivites('<%= itinerary[i].day %>')">Activities</a>
+        <a onclick="showAccom('<%= itinerary[i].day %>')">Accomodations</a>
+        <a onclick="showWeather('<%= itinerary[i].day %>')">Weather</a>
+      </div>
+      <div class="container2" id="restaraunt_day_<%= itinerary[i].day %>">
+        <h2>Restaurants</h2>
+        <div class="restaraunts">
+          <% for (let j=0; j < itinerary[i].restaurants.length; j++) { %>
+          <div class="restaraunt-card">
+            <img
+              src="<%= itinerary[i].restaurants[j].image %>"
+              alt="<%= itinerary[i].restaurants[j].name %>"
+            />
+            <div class="restaraunt-card-content">
+              <h3><%= itinerary[i].restaurants[j].name %></h3>
+              <p class="restaraunt-description">
+                <%= itinerary[i].restaurants[j].cuisine %><br />
+              </p>
+              <p class="restaraunt-rating">
+                Speciality: <%= itinerary[i].restaurants[j].specialty %>
+                <span class="restaraunt-reviews"
+                  >(<%= itinerary[i].restaurants[j].location %>)</span
+                >
+              </p>
+            </div>
+            <div class="restaraunt-price">
+              <p><%= itinerary[i].restaurants[j].price_range %></p>
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+      <div class="container3" id="activity_day_<%= itinerary[i].day %>">
+        <div class="activity">
+          <h2>Activities</h2>
+          <div class="activity-cards">
+            <% for (let a=0; a < itinerary[i].activities.length; a++) { %>
+            <div class="activity-card">
+              <div class="activity-card-content">
+                <h3><%= itinerary[i].activities[a] %></h3>
+              </div>
+            </div>
             <% } %>
-        <% } %>
-        <% for (let i = 0; i < itinerary.length; i++) { %>
-            <h3>Day: <%= itinerary[i].day %></h3>
-            <ul>
-                <li>Location: <%= itinerary[i].location %></li>
-                <li>Activities: <%= itinerary[i].activities.join(", ") %></li>
-            </ul>
-            <p>Restaurants:</p>
-            <% for (let j = 0; j < itinerary[i].restaurants.length; j++) { %>
-                <ul>
-                    <li>ID: <%= j+1 %></li>
-                    <li>Name: <%= itinerary[i].restaurants[j].name %></li>
-                    <li>Location: <%= itinerary[i].restaurants[j].location %></li>
-                    <li>Cuisine: <%= itinerary[i].restaurants[j].cuisine %></li>
-                    <li>Price Range: <%= itinerary[i].restaurants[j].price_range %></li>
-                    <li>Speciality: <%= itinerary[i].restaurants[j].specialty %></li>
-                    <li>
-                        <img src="<%= itinerary[i].restaurants[j].image %>" alt="<%= itinerary[i].restaurants[j].name %>" width="200" />
-                    </li>
-                </ul>
+          </div>
+        </div>
+      </div>
+      <div class="container4" id="acomm_day_<%= itinerary[i].day %>">
+        <div class="accomodation">
+          <h2>Accomodations</h2>
+          <% for (let k=0; k < itinerary[i].accommodations.length; k++) { %>
+          <div class="accomodation-card">
+            <img
+              src="<%= itinerary[i].accommodations[k].image %>"
+              alt="<%= itinerary[i].accommodations[k].name %>"
+              alt="Hotel Image"
+            />
+            <div class="accomodation-card-content">
+              <h3><%= itinerary[i].accommodations[k].name %></h3>
+              <p class="accomodation-description">
+                <%= itinerary[i].accommodations[k].description %>
+              </p>
+              <p class="accomodation-rating">
+                <%= itinerary[i].accommodations[k].location %>
+              </p>
+            </div>
+            <div class="accomodation-price">
+              <p><%= itinerary[i].accommodations[k].price_range %></p>
+            </div>
+          </div>
+          <% } %>
+        </div>
+      </div>
+      <div class="container5" id="weather_day_<%= itinerary[i].day %>">
+        <div class="weather">
+          <% if (weather) { %>
+          <h2>Current Weather Details</h2>
+          <div class="card">
+            <img class="desc-img" src="<%= weather.image %>" alt="" />
+            <p>Weather: <%= weather.desc %></p>
+            <p>Temperature: <%= weather.temp %>°C</p>
+            <p>Humidity: <%= weather.humidity %>%</p>
+            <p>Wind Speed: <%= weather.wind %></p>
+          </div>
+          <h2>Weather Forecast</h2>
+          <div class="forecasts">
+            <% for (let w=0; w < weather.forecast.length; w++) { %>
+            <div class="forecast-card">
+              <p>Day <%= w + 1 %></p>
+              <p>High: <%= weather.forecast[w].high %>°C</p>
+              <p>Low: <%= weather.forecast[w].low %>°C</p>
+              <p>Weather: <%= weather.forecast[w].desc %></p>
+            </div>
             <% } %>
-            <p>Accommodations:</p>
-            <% for (let k = 0; k < itinerary[i].accommodations.length; k++) { %>
-                <ul>
-                    <li>ID: <%= k+1 %></li>
-                    <li>Name: <%= itinerary[i].accommodations[k].name %></li>
-                    <li>Location: <%= itinerary[i].accommodations[k].location %></li>
-                    <li>Price Range: <%= itinerary[i].accommodations[k].price_range %></li>
-                    <li>Description: <%= itinerary[i].accommodations[k].description %></li>
-                    <li>
-                        <img src="<%= itinerary[i].accommodations[k].image %>" alt="<%= itinerary[i].accommodations[k].name %>" width="200" />
-                    </li>
-                </ul>
-            <% } %>
-            <hr>
-        <% } %>
-    <% } %>
-    <script>
-        function showLoading() {
-        document.getElementById("itinerary-form").style.display = "none"; // Hide the form
-        document.getElementById("loading-message").style.display = "block"; // Show the loading message
-        return true; // Continue with the form submission (return false to cancel the submission)
-    }
+          </div>
+        </div>
+      </div>
+      <% } else { %>
+      <h2>Weather Details</h2>
+      <p>Weather details not available</p>
+      <% } %>
+    </div>
+    <% } %> <% } %>
+    <script src="/js/itinerary.js"></script>
+    <script type="text/javascript">
+      // Function to save the itinerary
+      function saveItinerary() {
+        // Prompt the user to enter a name for the itinerary
+        let itineraryName = prompt("Enter a name for your itinerary");
+        if (itineraryName == null || itineraryName == "") {
+          return;
+        } else if (itineraryName.length > 20) {
+          alert("Name must be less than 20 characters");
+          return;
+        }
+
+        // Warn user and ask to generate again if any error occurs
+        alert("If any error occurs, you will have to generate the itinerary again to save it!")
+
+        let itinerary = {
+          "itinerary": []
+        }
+        // Fetch the itinerary details from the page
+        for (let i = 0; i < <%= itinerary.length %>; i++) {
+          let day = document.querySelector(".day" + (i + 1));
+          let restaurants = day.querySelectorAll(".restaraunt-card");
+          let activities = day.querySelectorAll(".activity-card");
+          let accommodations = day.querySelectorAll(".accomodation-card");
+
+          let dayDetails = {
+            day: i + 1,
+            location: day.querySelector("#month").innerText,
+            restaurants: [],
+            activities: [],
+            accommodations: []
+          }
+
+          // Fetch the restaurant details
+          for (let j = 0; j < restaurants.length; j++) {
+            let restaurant = {
+              name: restaurants[j].querySelector("h3").innerText,
+              cuisine: restaurants[j].querySelector(".restaraunt-description").innerText,
+              specialty: restaurants[j].querySelector(".restaraunt-rating").innerText,
+              price_range: restaurants[j].querySelector(".restaraunt-price p").innerText,
+              image: restaurants[j].querySelector("img").src
+            }
+            dayDetails.restaurants.push(restaurant);
+          }
+
+          // Fetch the activity details
+          for (let j = 0; j < activities.length; j++) {
+            dayDetails.activities.push(activities[j].querySelector("h3").innerText);
+          }
+
+          // Fetch the accommodation details
+          for (let j = 0; j < accommodations.length; j++) {
+            let accommodation = {
+              name: accommodations[j].querySelector("h3").innerText,
+              description: accommodations[j].querySelector(".accomodation-description").innerText,
+              location: accommodations[j].querySelector(".accomodation-rating").innerText,
+              price_range: accommodations[j].querySelector(".accomodation-price p").innerText,
+              image: accommodations[j].querySelector("img").src
+            }
+            dayDetails.accommodations.push(accommodation);
+          }
+
+          itinerary["itinerary"].push(dayDetails);
+        }
+
+        // Create a new form element
+        var form = document.createElement("form");
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "/itinerary/save");
+
+        // Create a new input element
+        var input = document.createElement("input");
+        input.setAttribute("type", "hidden");
+        input.setAttribute("name", "itinerary");
+        input.setAttribute("value", JSON.stringify(itinerary));
+
+        // Append the input to the form
+        form.appendChild(input);
+
+        // Create a new input element
+        var input2 = document.createElement("input");
+        input2.setAttribute("type", "hidden");
+        input2.setAttribute("name", "itineraryName");
+        input2.setAttribute("value", itineraryName);
+
+        // Append the input to the form
+        form.appendChild(input2);
+
+        // Append the form to the document body
+        document.body.appendChild(form);
+
+        // Submit the form
+        form.submit();
+      }
     </script>
   </body>
 </html>

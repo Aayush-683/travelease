@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Account Details</title>
-    <link rel="stylesheet" href="/css/account.css" />
+    <link rel="stylesheet" href="/public/css/account.css" />
 </head>
 
 <body>
@@ -33,30 +33,17 @@
                     </g>
                 </g>
             </svg>
-            <div class="banner-info center align-start">
+            <div class="banner-info">
                 <h2>
-                    <%= req.session.name %>
+                    <%= req.session.fullName %>
                 </h2>
-                <div class="center-row">
-                  <a href="/auth/logout"><button>Logout</button></a>
-                  <a href="/home"><button>Home</button></a>
-                </div>
             </div>
-            <div class="banner-info center align-end">
+            <div class="banner-info center">
                 <p>Email <%= req.session.email %>
                 </p>
-                <% if (req.session.verifiedMail) { %>
-                  <button disabled>Verified!</button>
-                <% } else { %>
-                  <button onclick="showVerificationBox()">Verify</button></a>
-                <% } %>
+                <button onclick="showVerificationBox()">Verify</button></a>
             </div>
         </div>
-        <% if (error) { %>
-            <div class="error">
-                <p><%= error %></p>
-            </div>
-        <% } %>
     </div>
 
     <div class="verification-box" id="verification-box" style="display: none;">
@@ -74,12 +61,13 @@
     <div class="saved-pages-container">
         <h3 class="title">Saved Pages</h3>
         <!-- Display saved pages here -->
-        <div class="saved-pages">
-            <% for (let i = 0; i < saved.length; i++) { %>
-                <div class="saved-page" onclick="load('<%= saved[i].name %>')">
-                    <h3><%= saved[i].name %></h3>
-                </div>
-            <% } %>
+        <div class="saved-pages" onclick="load('')">
+            <div class="saved-page">
+                <h3>Varanasi</h3>
+            </div>
+            <div class="saved-page">
+                <h3>Greece</h3>
+            </div>
             <div class="gen saved-page" onclick="gen()">
                 <h3>Generate More</h3>
             </div>
@@ -153,7 +141,7 @@
 
             var input = document.createElement("input");
             input.setAttribute("type", "hidden");
-            input.setAttribute("name", "name");
+            input.setAttribute("name", "file");
             input.setAttribute("value", itinerary);
             form.appendChild(input);
 

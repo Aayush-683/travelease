@@ -51,7 +51,16 @@ email.addEventListener("keyup", () => {
 let password = document.querySelector("#password");
 password.addEventListener("keyup", () => {
     let passwordValue = password.value;
-    let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    let check = false;
+    let specialChar = /[!@#$%^&*(),.?":{}|<>]/;
+    let nos = /[0-9]/;
+    let upperCase = /[A-Z]/;
+    if (passwordValue.length >= 6 
+        && specialChar.test(passwordValue)
+        && upperCase.test(passwordValue)
+        && nos.test(passwordValue)) {
+        check = true;
+    }
     if (passwordRegex.test(passwordValue)) {
         password.setCustomValidity("");
     } else {

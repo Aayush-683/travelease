@@ -1,40 +1,89 @@
-
-*{
+* {
     margin: 0;
     padding: 0;
+    z-index: 1;
 }
-.cont1{
-    height: 30vh;
+
+.cont1 {
+    height: auto;
+    padding: 20px 0;
+    background-color: antiquewhite;
 }
-.banner{
+
+.banner {
     height: 100%;
     display: grid;
-    grid-template-columns: 10% auto 20%;
+    grid-template-columns: 10% auto auto;
     gap: 20px;
     align-items: center;
-    background-color:antiquewhite;
+    background-color: antiquewhite;
 }
-.banner svg{
+
+.error {
+    display: flex;
+    width: auto;
+    align-items: center;
+    height: fit-content;
+    justify-content: center;
+    padding-top: 20px;
+
+    p {
+        color: FF4A52;
+        font-size: 1.5rem;
+    }
+}
+
+.banner svg {
     width: 100%;
 }
-.banner-info h2{
+
+.banner-info h2 {
     position: relative;
-    bottom: 50px;
     font-size: 2rem;
 }
-.banner-info p{
+
+.center {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.center-row {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.align-start {
+    align-items: flex-start !important;
+}
+
+.align-end {
+    align-items: flex-end !important;
+    margin-right: 20px;
+}
+
+.banner-info p {
     position: relative;
-    bottom: 40px;
     font-size: 1.7rem;
+    width: fit-content;
 }
-.banner-info button{
-    width:10rem;
-    height: 30px;
-    border-radius: 20px;
+
+button {
+    background-color: #FF4A52;
+    height: 3rem;
+    width: 14rem;
+    padding: 5px;
+    border-radius: 5px;
+    color: aliceblue;
     border: none;
-    background-color: #0056b3;
-    color: #fff;
+    font-size: 1.1rem;
 }
+
 /* Styles for the profile section */
 .profile-section {
     display: flex;
@@ -82,14 +131,25 @@
 
 /* Styles for the saved pages container */
 .saved-pages-container {
-    height: auto;
+    height: 99vh;
+    padding: 50px 0;
     width: 100%;
-    /* background-color: antiquewhite; */
-   
+    background-image: url("/images/shifaaz-shamoon-Rl9l9mL6Pvs-unsplash.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    .title {
+        text-align: center;
+        color: white;
+        text-shadow: 4px 4px 4px #000000;
+        font-size: 3rem;
+        margin-bottom: 30px;
+    }
 }
-.saved-pages{
-    height: 100%;
-    padding: 50px;
+
+.saved-pages {
+    /* height: 100%; */
+    padding: 0 50px;
     display: flex;
     flex-direction: row;
     gap: 40px;
@@ -97,15 +157,95 @@
 
 .saved-page {
     height: 30vh;
-    width: 30%;
-    background-image: url('varanasi.jpg');
-    background-repeat:no-repeat;
-    background-size: cover;
+    width: fit-content;
+    min-width: 20%;
+    background-color: antiquewhite;
+    background-image: url("/images/itinerary.png");
+    background-repeat: no-repeat;
+    background-position-y: 40%;
+    background-position-x: center;
+    background-size: 70%;
     border-radius: 20px;
     border: none;
+
+
+    h3 {
+        position: relative;
+        top: 90%;
+        text-align: center;
+    }
 }
-.saved-page h3{
-    position: relative;
-    top: 3px;
-    left: 10px;
+
+.gen {
+    background-image: url("/images/plus.png") !important;
+    background-size: 50% !important;
+    background-position-x: center !important;
+    background-position-y: 45% !important;
+}
+
+.saved-page:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
+
+.verification-box {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Darkened background */
+    z-index: 9999;
+}
+
+.verification-box-content {
+    background-color: #fff;
+    width: 80%;
+    padding: 20px;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: self-start;
+    justify-content: center;
+    height: auto;
+    gap: 15px;
+
+    h2 {
+        text-align: center;
+        font-size: 2rem;
+    }
+
+    p {
+        font-size: 1.5rem;
+    }
+
+    a {
+        padding: 10px 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    input {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #000;
+    }
+
+    .exit {
+        position: absolute;
+        top: 5px;
+        right: 20px;
+        font-size: 4rem;
+        cursor: pointer;
+    }
 }

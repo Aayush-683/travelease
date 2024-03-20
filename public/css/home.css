@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
 }
@@ -6,6 +6,7 @@
 body {
     font-family: Arial, sans-serif;
 }
+
 /*continer1*/
 /* .container1 {
 } */
@@ -19,22 +20,24 @@ body {
     gap: 10rem;
     padding: 0 50px;
 }
-.banner_img img{
+
+.banner_img img {
     width: 25rem;
     height: 100vh;
 }
 
-.banner_title{
+.banner_title {
     display: flex;
     flex-direction: row;
-    gap:5px;
+    gap: 5px;
     align-items: center;
 }
-.banner_title hr{
+
+.banner_title hr {
     width: 30px;
 }
 
-.banner_info{
+.banner_info {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -42,46 +45,46 @@ body {
     width: 40%;
 }
 
-.banner_info h3{
+.banner_info h3 {
     font-size: 2.5rem;
 }
-.banner_info a{
+
+.banner_info a {
     text-decoration: none;
     text-align: center;
     width: 5rem;
     height: 2rem;
-    background-color: aqua;
     padding: 5px;
     color: aliceblue;
     border-radius: 10px;
 }
 
 
-
 /*container2*/
-.container2{
+.container2 {
     width: 100%;
     height: 45vh;
     background-image: url("/images/shifaaz-shamoon-Rl9l9mL6Pvs-unsplash.jpg");
     background-size: cover;
     background-attachment: fixed;
     display: flex;
-    flex-direction:column;
+    flex-direction: column;
     gap: 3rem;
     align-items: center;
-    justify-content:center;
+    justify-content: center;
 }
-.container2 h4{
+
+.container2 h4 {
     color: white;
     font-size: 2rem;
 }
 
-.container2 button{
+button {
     background-color: #FF4A52;
     height: 3rem;
     width: 14rem;
     padding: 5px;
-    border-radius:5px;
+    border-radius: 5px;
     color: aliceblue;
     border: none;
     font-size: 1.1rem;
@@ -89,94 +92,107 @@ body {
 
 /*continer3*/
 
-.services{
-    height: 60vh;
+.services {
+    height: 50vh;
     background: #FAF9F6;
     padding: 50px;
     display: flex;
     flex-direction: column;
-    gap:50px;
+    gap: 50px;
 }
-.services-heading{
+
+.services-heading {
     text-align: center;
     color: #F875AA;
 }
-.services-heading h3{
+
+.services-heading h3 {
     font-size: 2.5rem;
     margin-bottom: 20px;
 }
-.services-heading p{
+
+.services-heading p {
     font-size: 1.3rem;
     color: #99B080;
 }
 
-.services-cards{
+.services-cards {
     height: 100%;
     width: 100%;
     gap: 30px;
     display: flex;
-    flex-direction: row; 
+    flex-direction: row;
     align-items: center;
     justify-content: center;
 }
-.service-card{
+
+.service-card {
     width: 30%;
-    height:100%;
-    display:flex;
+    height: 100%;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 30px;
 }
-.service-card svg{
+
+.service-card svg {
     width: 15rem;
 }
-.service-card-info{
+
+.service-card-info {
     height: 100%;
     width: 100%;
     text-align: center;
 }
-.service-card-info h4{
+
+.service-card-info h4 {
     font-size: 1.7rem;
     margin-bottom: 10px;
     color: #F875AA;
 }
-.service-card-info p{
+
+.service-card-info p {
     font-size: 1rem;
     color: #99B080;
 
 }
 
 /*container 3*/
-.fam-places{
+.fam-places {
     height: 140vh;
     max-height: auto;
     padding: 50px;
     background-color: #99B080;
 }
-.fam-places-heading{
+
+.fam-places-heading {
     height: 15%;
-   display: flex;
-   flex-direction: column;
-   gap: 10px;
-   align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
 }
-.fam-places-heading h3{
+
+.fam-places-heading h3 {
     font-size: 2.5rem;
 }
-.fam-places-heading p{
+
+.fam-places-heading p {
     font-size: 1.3rem;
 }
-.fam-places-cards{
+
+.fam-places-cards {
     height: 80%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap:  30px;
+    gap: 30px;
     align-items: center;
     justify-content: center;
 }
-.fam-places-card{
+
+.fam-places-card {
     height: 50vh;
     width: 30%;
     display: flex;
@@ -184,70 +200,83 @@ body {
     border: black solid 5px;
     border-radius: 30px;
 }
-.fam-places-card img{
+
+.fam-places-card img {
     width: 100%;
     border-radius: 30px;
 }
-.fam-places-card-info{
+
+.fam-places-card-info {
     height: 100%;
     display: flex;
     flex-direction: column;
     padding: 20px;
 }
-.fam-places-card-info h5{
+
+.fam-places-card-info h5 {
     font-size: 1rem;
 }
-.fam-places-card-info p{
+
+.fam-places-card-info p {
     font-size: .9rem;
 }
-.fam-places-card-info-review{
+
+.fam-places-card-info-review {
     display: flex;
     flex-direction: row;
     margin-top: auto;
 }
+
 /* Google Fonts - Poppins */
 
-.review{
+.review {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
-.review-body{
+
+.review-body {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #EFEFEF;
 }
-.slide-container{
+
+.slide-container {
     max-width: 1120px;
     width: 100%;
     padding: 40px 0;
 }
-.slide-content{
+
+.slide-content {
     padding: 45px 20px;
     margin: 0 40px;
     overflow: hidden;
     border-radius: 25px;
 }
-.card{
+
+.card {
     border-radius: 25px;
     background-color: #FFF;
 }
+
 .image-content,
-.card-content{
+.card-content {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 10px 14px;
 }
-.image-content{
+
+.image-content {
     position: relative;
     row-gap: 5px;
     padding: 25px 0;
 }
-.overlay{
+
+.overlay {
     position: absolute;
     left: 0;
     top: 0;
@@ -256,8 +285,9 @@ body {
     background-color: #000000;
     border-radius: 25px 25px 0 25px;
 }
+
 .overlay::before,
-.overlay::after{
+.overlay::after {
     content: '';
     position: absolute;
     right: 0;
@@ -266,11 +296,13 @@ body {
     width: 40px;
     background-color: #49a4b0;
 }
-.overlay::after{
+
+.overlay::after {
     border-radius: 0 25px 0 0;
     background-color: #FFF;
 }
-.card-image{
+
+.card-image {
     position: relative;
     height: 150px;
     width: 150px;
@@ -279,14 +311,16 @@ body {
     padding: 3px;
 
 }
-.card-image .card-img{
+
+.card-image .card-img {
     height: 100%;
     width: 100%;
     object-fit: cover;
     border-radius: 50%;
     border: 4px solid #047e93;
 }
-.name{
+
+.name {
     font-size: 23px;
     font-weight: 600;
     color: #333;
@@ -294,7 +328,8 @@ body {
     text-align: center;
     font-family: Footlight MT Light;
 }
-.description{
+
+.description {
     font-size: 16px;
     color: #707070;
     text-align: center;
@@ -303,7 +338,8 @@ body {
     font-family: Sylfaen;
     font-style: italic;
 }
-.button{
+
+.button {
     border: none;
     font-size: 16px;
     font-family: Garamond;
@@ -315,43 +351,46 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
 }
-.button:hover{
+
+.button:hover {
     background: #4e5057;
 }
 
-.swiper-navBtn{
-    color:#047e93;
+.swiper-navBtn {
+    color: #047e93;
     transition: color 0.3s ease;
 }
 
-.swiper-navBtn:hover{
-    color:#454a62;
+.swiper-navBtn:hover {
+    color: #454a62;
 }
 
 .swiper-navBtn::before,
-.swiper-navBtn::after{
+.swiper-navBtn::after {
     font-size: 40px;
 }
-.swiper-button-next{
+
+.swiper-button-next {
     border: none !important;
     right: 0;
 }
 
-.swiper-button-prev{
+.swiper-button-prev {
     border: none !important;
     left: 0;
 }
 
-.swiper-pagination-bullet{
+.swiper-pagination-bullet {
     background-color: rgb(133, 36, 36);
     opacity: 1;
 }
-.swiper-pagination-bullet-active{
+
+.swiper-pagination-bullet-active {
     background-color: black;
 }
 
 @media screen and (max-width: 768px) {
-    .swiper-navBtn{
+    .swiper-navBtn {
         display: none;
     }
 }
