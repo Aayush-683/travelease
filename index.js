@@ -210,35 +210,35 @@ app.post('/itinerary', async (req, res) => {
     let members = req.body.members;
     let budget = req.body.budget;
     if (members < 1) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Number of Members" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Number of Members", generated: false, weather: false });
     } else if (days < 1) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Number of Days" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Number of Days", generated: false, weather: false });
     } else if (budget < 1) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Budget" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Budget", generated: false, weather: false });
     } else if (!city || !country || !currency) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Place" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Place", generated: false, weather: false });
     }
     // Check if currency is valid
     let validCurrency = await checkCurrency(currency);
     if (!validCurrency) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Currency" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Currency", generated: false, weather: false });
     }
     // Generate Itinerary
     let cost = `${budget} ${currency}`;
     let generated = await generateItinerary(days, place, members, cost);
     if (generated === "Error") {
-        return res.render('itinerary', { itinerary: false, req: req, error: "There was an error generating the itinerary, please try again later" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "There was an error generating the itinerary, please try again later", generated: false, weather: false });
     } else if (generated === "Rate limit exceeded") {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Server Busy! Please Try Again in a Few Minutes" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Server Busy! Please Try Again in a Few Minutes", generated: false, weather: false });
     } else if (!generated) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary..." });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary...", generated: false, weather: false });
     }
     // convert text to json
     try {
         generated = JSON.parse(generated);
     } catch (err) {
         console.log(generated);
-        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary", generated: false, weather: false });
     }
     let itinerary = generated.itinerary;
     // Generate Image for each accommodation and restaurant
@@ -286,20 +286,20 @@ app.post('/itinerary/save', async (req, res) => {
     let email = req.session.email;
     let loggedIn = req.session.loggedIn;
     if (!loggedIn) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Please Login to Save an Itinerary" })
+        return res.render('itinerary', { itinerary: false, req: req, error: "Please Login to Save an Itinerary", generated: false, weather: false })
     }
     // Check if email is verified
     email = email.replace(/\./g, '_');
     let emailChk = await db.get(`accounts.${email}`);
     if (!emailChk.verified) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Please Verify Your Email to Save an Itinerary" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Please Verify Your Email to Save an Itinerary", generated: false, weather: false });
     }
     let saved = await db.get(`saved.${email}`) || [];
     let count = saved.length;
     // Check if name already exists
     for (let i = 0; i < saved.length; i++) {
         if (saved[i].name === name) {
-            return res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Name Already Exists" });
+            return res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Name Already Exists", generated: false, weather: false });
         }
     }
     // Save itinerary to a file in storage folder
@@ -307,7 +307,7 @@ app.post('/itinerary/save', async (req, res) => {
     fs.writeFileSync(file, itinerary, 'utf8');
     saved.push({ name, file });
     await db.set(`saved.${email}`, saved);
-    res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Saved Successfully!" });
+    res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Saved Successfully!", generated: false, weather: false });
 });
 
 // Load Saved Itinerary
