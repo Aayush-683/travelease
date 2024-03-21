@@ -79,6 +79,9 @@
             <% for (let i = 0; i < saved.length; i++) { %>
                 <div class="saved-page" onclick="load('<%= saved[i].name %>')">
                     <h3><%= saved[i].name %></h3>
+                    <div class="delete" onclick="delete('<%= saved[i].name %>')">
+                        <span>&times;</span>
+                    </div>
                 </div>
             <% } %>
             <div class="gen saved-page" onclick="gen()">
