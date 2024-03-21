@@ -328,7 +328,7 @@ app.get('/itinerary/load', async (req, res) => {
         }
     }
     if (!file) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Not Found" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Not Found", generated: false, weather: false });
     }
     // read file in single quotes
     let itinerary
@@ -336,7 +336,7 @@ app.get('/itinerary/load', async (req, res) => {
         itinerary = fs.readFileSync(file, 'utf8');
     } catch (err) {
         console.log(err);
-        return res.render('itinerary', { itinerary: false, req: req, error: "Error Loading Itinerary" });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Error Loading Itinerary", generated: false, weather: false});
     }
     let decodedString = itinerary.replace(/&#39;/g, "'");
     itinerary = JSON.parse(decodedString);
@@ -344,6 +344,33 @@ app.get('/itinerary/load', async (req, res) => {
     itinerary = itinerary.itinerary;
 
     res.render('itinerary', { itinerary: itinerary, req: req, error: false, weather: false, generated: false });
+});
+
+// Delete Saved Itinerary
+app.post('/itinerary/delete', async (req, res) => {
+    let name = req.body.name;
+    let email = req.session.email;
+    let loggedIn = req.session.loggedIn;
+    if (!loggedIn) {
+        return res.redirect('/auth');
+    }
+    email = email.replace(/\./g, '_');
+    let saved = await db.get(`saved.${email}`) || [];
+    let file = false;
+    for (let i = 0; i < saved.length; i++) {
+        if (saved[i].name === name) {
+            file = saved[i].file;
+            saved.splice(i, 1);
+            break;
+        }
+    }
+    if (!file) {
+        return res.sendStatus(403).send("Itinerary Not Found");
+    }
+    // Delete File
+    fs.unlinkSync(file)
+    await db.set(`saved.${email}`, saved);
+    res.redirect('/me');
 });
 
 // Signup Post Route

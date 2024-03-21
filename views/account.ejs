@@ -79,7 +79,7 @@
             <% for (let i = 0; i < saved.length; i++) { %>
                 <div class="saved-page" onclick="load('<%= saved[i].name %>')">
                     <h3><%= saved[i].name %></h3>
-                    <div class="delete" onclick="delete('<%= saved[i].name %>')">
+                    <div class="delete" onclick="del('<%= saved[i].name %>')">
                         <span>&times;</span>
                     </div>
                 </div>
@@ -153,6 +153,25 @@
             var form = document.createElement("form");
             form.setAttribute("method", "get");
             form.setAttribute("action", "/itinerary/load");
+            form.style.display = "hidden";
+
+            var input = document.createElement("input");
+            input.setAttribute("type", "hidden");
+            input.setAttribute("name", "name");
+            input.setAttribute("value", itinerary);
+            form.appendChild(input);
+
+            // submit form
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+        // Delete itinerary
+        function del(itinerary) {
+            // Create and post dummy form
+            var form = document.createElement("form");
+            form.setAttribute("method", "post");
+            form.setAttribute("action", "/itinerary/delete");
             form.style.display = "hidden";
 
             var input = document.createElement("input");
