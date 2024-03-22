@@ -16,9 +16,9 @@ body {
   align-items: center;
   flex-direction: column;
   gap: 30px;
-  background-color: linear-gradient(to right, rgb(110, 216, 255), rgb(110, 91, 255));
+  background-color: aliceblue;
   /*  Fall Back */
-  background-image: url('/images/bg.jpg');
+  background-image: url('/images/shifaaz-shamoon-Rl9l9mL6Pvs-unsplash.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -75,7 +75,7 @@ header {
   height: 60px;
   width: 150px;
   border-radius: 50px;
-  background-image: linear-gradient(to right, #4e73df, #945ad1);
+  background-color:#FF4A52;
   position: absolute;
   top: 20px;
   left: 100px;
@@ -120,7 +120,7 @@ header {
 }
 
 #signup:disabled {
-  background-image: linear-gradient(to right, #273b76, #5b3783);
+  background-color: #6d1f23;
   color: rgb(77, 77, 77);
   cursor: not-allowed;
 }
@@ -141,7 +141,7 @@ header {
   height: 60px;
   width: 150px;
   border-radius: 50px;
-  background-image: linear-gradient(to right, #4e73df, #945ad1);
+  background-color: #FF4A52;
   font-size: 22px;
   border: none;
   cursor: pointer;
