@@ -12,6 +12,7 @@ const fs = require('fs');
 const Weather = require("@tinoschroeter/weather-js");
 const weather = new Weather();
 const { G4F } = require('g4f');
+const { Integration } = require('discord.js');
 const g4f = new G4F();
 
 // Email Setup
@@ -40,6 +41,7 @@ app.use(session({
 }));
 app.set('view engine', 'ejs');
 app.set('views', './views');
+app.setMaxListeners(0);
 
 // Middleware
 app.use((req, res, next) => {
@@ -197,48 +199,66 @@ app.get('/itinerary', (req, res) => {
     if (!loggedIn) {
         return res.redirect('/auth');
     }
-    res.render('itinerary', { itinerary: false, req: req, error: false, generated: false, weather: false });
+    let old = false;
+    res.render('itinerary', { itinerary: false, req: req, error: false, generated: false, weather: false, old: old });
 });
 
 // Generate Itinerary Post Route
 app.post('/itinerary', async (req, res) => {
-    let days = req.body.days;
-    let city = req.body.city;
-    let country = req.body.country;
-    let currency = req.body.currency;
+    let body = req.body;
+    let regen = req.body.regenerated || false;
+    let old = regen ? req.body.itinerary : false;
+    if (regen) {
+        body = body.oldBody;
+        body = `${body.replace(/&#34;/g, '"')}`;
+        body = JSON.parse(body);
+        // console.log(body);
+        if (old) {
+            old = `${old.replace(/&amp;#34;/g, '"')}`;
+            old = JSON.parse(old);
+            old = old.itinerary;
+        }
+        console.log(old);
+    }
+    let days = body.days;
+    let city = body.city;
+    let country = body.country;
+    let currency = body.currency;
     let place = `${city}, ${country}.`;
-    let members = req.body.members;
-    let budget = req.body.budget;
+    let members = body.members;
+    let budget = body.budget;
+    let detailed = body.detailed || false;
+    // console.log(body)
     if (members < 1) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Number of Members", generated: false, weather: false });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Number of Members", generated: false, weather: false, old: old });
     } else if (days < 1) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Number of Days", generated: false, weather: false });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Number of Days", generated: false, weather: false, old: old });
     } else if (budget < 1) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Budget", generated: false, weather: false });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Budget", generated: false, weather: false, old: old });
     } else if (!city || !country || !currency) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Place", generated: false, weather: false });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Place", generated: false, weather: false, old: old });
     }
     // Check if currency is valid
     let validCurrency = await checkCurrency(currency);
     if (!validCurrency) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Currency", generated: false, weather: false });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Invalid Currency", generated: false, weather: false, old: old });
     }
     // Generate Itinerary
     let cost = `${budget} ${currency}`;
     let generated = await generateItinerary(days, place, members, cost);
     if (generated === "Error") {
-        return res.render('itinerary', { itinerary: false, req: req, error: "There was an error generating the itinerary, please try again later", generated: false, weather: false });
+        return res.render('itinerary', { itinerary: false, req: req, error: "There was an error generating the itinerary, please try again later", generated: false, weather: false, old: old });
     } else if (generated === "Rate limit exceeded") {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Server Busy! Please Try Again in a Few Minutes", generated: false, weather: false });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Server Busy! Please Try Again in a Few Minutes", generated: false, weather: false, old: old });
     } else if (!generated) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary...", generated: false, weather: false });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary...", generated: false, weather: false, old: old });
     }
     // convert text to json
     try {
         generated = JSON.parse(generated);
     } catch (err) {
         console.log(generated);
-        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary", generated: false, weather: false });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Error Generating Itinerary", generated: false, weather: false, old: old });
     }
     let itinerary = generated.itinerary;
     // Generate Image for each accommodation and restaurant
@@ -273,33 +293,67 @@ app.post('/itinerary', async (req, res) => {
         weather_return = w;
     }
     // Render Itinerary
-    res.render('itinerary', { itinerary: itinerary, req: req, error: false, weather: weather_return, generated: true });
+    if (detailed) {
+        res.render('itinerary', { old: old, itinerary: itinerary, req: req, error: false, weather: weather_return, generated: true });
+    } else {
+        req.body.city = city;
+        req.body.country = country;
+        res.render('compactview', { old: old, itinerary: itinerary, req: req, error: false, weather: weather_return, generated: true });
+    }
+});
+
+// Load detailed itinerary
+app.post('/itinerary/details', async (req, res) => {
+    let itinerary = req.body.itinerary;
+    itinerary = `${itinerary.replace(/&#34;/g, '"')}`;
+    itinerary = JSON.parse(itinerary);
+    let old = req.body.old || false;
+    if (old) {
+        old = `${old.replace(/&#34;/g, '"')}`;
+        old = JSON.parse(old);
+    }
+    // console.log(itinerary);
+    // Get Weather Data
+    let city = req.body.city;
+    let country = req.body.country;
+    let w = await getWeatherData(city, country);
+    let weather_return = false;
+    if (w === "Error") {
+        weather_return = false;
+    } else if (!w) {
+        weather_return = false;
+    } else {
+        weather_return = w;
+    }
+    // Render Itinerary
+    res.render('itinerary', { old: old, itinerary: itinerary, req: req, error: false, weather: weather_return, generated: true });
 });
 
 // Save itinerary
 app.post('/itinerary/save', async (req, res) => {
     let itinerary = req.body.itinerary;
     let name = req.body.itineraryName;
+    let old = req.body.old || false;
     if (!name || !itinerary || name.length > 20) {
         return res.status(400).send("Invalid Request");
     }
     let email = req.session.email;
     let loggedIn = req.session.loggedIn;
     if (!loggedIn) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Please Login to Save an Itinerary", generated: false, weather: false })
+        return res.render('itinerary', { itinerary: false, req: req, error: "Please Login to Save an Itinerary", generated: false, weather: false, old: old })
     }
     // Check if email is verified
     email = email.replace(/\./g, '_');
     let emailChk = await db.get(`accounts.${email}`);
     if (!emailChk.verified) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Please Verify Your Email to Save an Itinerary", generated: false, weather: false });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Please Verify Your Email to Save an Itinerary", generated: false, weather: false, old: old });
     }
     let saved = await db.get(`saved.${email}`) || [];
     let count = saved.length;
     // Check if name already exists
     for (let i = 0; i < saved.length; i++) {
         if (saved[i].name === name) {
-            return res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Name Already Exists", generated: false, weather: false });
+            return res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Name Already Exists", generated: false, weather: false, old: old });
         }
     }
     // Save itinerary to a file in storage folder
@@ -307,7 +361,7 @@ app.post('/itinerary/save', async (req, res) => {
     fs.writeFileSync(file, itinerary, 'utf8');
     saved.push({ name, file });
     await db.set(`saved.${email}`, saved);
-    res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Saved Successfully!", generated: false, weather: false });
+    res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Saved Successfully!", generated: false, weather: false, old: old });
 });
 
 // Load Saved Itinerary
@@ -315,6 +369,7 @@ app.get('/itinerary/load', async (req, res) => {
     let name = req.query.name;
     let email = req.session.email;
     let loggedIn = req.session.loggedIn;
+    let old = req.body.old || false;
     if (!loggedIn) {
         return res.redirect('/auth');
     }
@@ -328,7 +383,7 @@ app.get('/itinerary/load', async (req, res) => {
         }
     }
     if (!file) {
-        return res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Not Found", generated: false, weather: false });
+        return res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Not Found", generated: false, weather: false, old: old });
     }
     // read file in single quotes
     let itinerary
@@ -336,14 +391,13 @@ app.get('/itinerary/load', async (req, res) => {
         itinerary = fs.readFileSync(file, 'utf8');
     } catch (err) {
         console.log(err);
-        return res.render('itinerary', { itinerary: false, req: req, error: "Error Loading Itinerary", generated: false, weather: false});
+        return res.render('itinerary', { itinerary: false, req: req, error: "Error Loading Itinerary", generated: false, weather: false, old: old });
     }
     let decodedString = itinerary.replace(/&#39;/g, "'");
     itinerary = JSON.parse(decodedString);
     // console.log(itinerary)
     itinerary = itinerary.itinerary;
-
-    res.render('itinerary', { itinerary: itinerary, req: req, error: false, weather: false, generated: false });
+    res.render('itinerary', { itinerary: itinerary, req: req, error: false, weather: false, generated: false, old: old });
 });
 
 // Delete Saved Itinerary
@@ -501,7 +555,14 @@ async function searchImageByQuery(query) {
             if (err) {
                 reject(err);
             } else {
-                resolve(results[0].url);
+                if (results.length < 1 || !results[0].url) {
+                    resolve("https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg");
+                }
+                try {
+                    resolve(results[0].url);
+                } catch (err) {
+                    resolve("https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found.jpg");
+                }
             }
         });
     });

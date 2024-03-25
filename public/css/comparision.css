@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     font-family: "PT Sans", sans-serif;
@@ -6,11 +6,23 @@
     font-style: italic;
 }
 
-.container{
+.container {
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background-color: beige;
+
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+    }
 }
-.comp{
-    height: 100%;
+
+.comp {
+    /* height: 100%; */
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -19,49 +31,60 @@
     justify-content: center;
     gap: 30px;
 }
-.card{
+
+.card {
     height: auto;
     width: 46%;
     background-color: aliceblue;
     border: 5px black solid;
     border-radius: 30px;
 }
-.heading{
+
+.heading {
     width: 90%;
     padding: 10px 30px;
     font-weight: 500;
 }
-.card-content{
+
+.card-content {
     padding: 10px 30px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     font-size: 1.3rem;
     position: relative;
-    top: -100px; /* initial position, text starts from above */
+    top: -100px;
+    /* initial position, text starts from above */
     left: 50%;
     transform: translateX(-50%);
-    opacity: 0; /* initially invisible */
-    animation: slideIn 2s forwards; /* animation duration and direction */
+    opacity: 0;
+    /* initially invisible */
+    animation: slideIn 2s forwards;
+    /* animation duration and direction */
 }
+
 @keyframes slideIn {
     0% {
-      top: -100px;
-      opacity: 0;
+        top: -100px;
+        opacity: 0;
     }
+
     100% {
-      top: 100%;
-      opacity: 1;
+        top: 100%;
+        opacity: 1;
     }
 }
-#act-head{
+
+#act-head {
     color: grey;
 }
-#day-no{
+
+#day-no {
     font-style: bold;
     font-weight: 700;
 }
-.card-content button{
+
+.card-content button {
     height: 2.5rem;
     border-radius: 20px;
     font-size: 1.2rem;

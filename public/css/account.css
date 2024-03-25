@@ -167,6 +167,7 @@ button {
     background-size: 70%;
     border-radius: 20px;
     border: none;
+    z-index: 1;
 
     .delete {
         position: absolute;
@@ -179,6 +180,7 @@ button {
         cursor: pointer;
         opacity: 0;
         transition: all 1s ease;
+        z-index: 2;
 
         span {
             font-size: 1.5rem;

@@ -2,62 +2,213 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/compactview.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/comparision.css" />
+  <!-- <link rel="stylesheet" href="/public/css/compactview.css"> -->
 </head>
 
 <body>
-
-    <body>
-        <div class=container>
-            <h1>First Generation</h1>
-            <!-- <h3>Miami</h3> -->
-            <div class=card>
-                <div class=image>
-                    <img href="#" src="/images/1.png">
-                </div>
-                <div class=content>
-                    <h3>Location</h3>
-                    <h4>Activities to Do</h4>
-                    <ul>
-                        <li>one</li>
-                        <li>two</li>
-                        <li>three</li>
-                    </ul>
-                </div>
+  <!-- <div class="container">
+        <h1>First Generation</h1>
+        <h3>Miami</h3>
+        <div class=card>
+            <div class=image>
+                <img href="#" src="/images/1.png">
             </div>
-            <div class=card>
-                <div class=image>
-                    <img href="#" src="/images/2.png">
-                </div>
-                <div class=content>
-                    <h3>Location</h3>
-                    <h4>Activities to Do</h4>
-                    <ul>
-                        <li>one</li>
-                        <li>two</li>
-                        <li>three</li>
-                    </ul>
-                </div>
-            </div>
-            <div class=card>
-                <div class=image>
-                    <img href="#" src="/images/3.png">
-                </div>
-                <div class=content>
-                    <h3>Location</h3>
-                    <h4>Activities to Do</h4>
-                    <ul>
-                        <li>one</li>
-                        <li>two</li>
-                        <li>three</li>
-                    </ul>
-                </div>
+            <div class=content>
+                <h3>Location</h3>
+                <h4>Activities to Do</h4>
+                <ul>
+                    <li>one</li>
+                    <li>two</li>
+                    <li>three</li>
+                </ul>
             </div>
         </div>
-    </body>
+        <div class=card>
+            <div class=image>
+                <img href="#" src="/images/2.png">
+            </div>
+            <div class=content>
+                <h3>Location</h3>
+                <h4>Activities to Do</h4>
+                <ul>
+                    <li>one</li>
+                    <li>two</li>
+                    <li>three</li>
+                </ul>
+            </div>
+        </div>
+        <div class=card>
+            <div class=image>
+                <img href="#" src="/images/3.png">
+            </div>
+            <div class=content>
+                <h3>Location</h3>
+                <h4>Activities to Do</h4>
+                <ul>
+                    <li>one</li>
+                    <li>two</li>
+                    <li>three</li>
+                </ul>
+            </div>
+        </div>
+    </div> -->
+  <div class="container">
+    <h1>Compare Your Generated Itineraries Here.</h1>
+    <div class="comp">
+      <% if (old) { %>
+      <div class="card">
+        <div class="heading">
+          <h2>Previous Generation</h2>
+          <hr />
+        </div>
+        <div class="card-content">
+          <h3><%= old[0].location %></h3>
+          <p id="act-head">Activities</p>
+          <% for (let i = 0; i < old.length; i++) { %>
+          <p>
+            <span id="day-no">Day <%= i + 1 %> : </span>
+            <% for (let l = 0; l < old[i].activities.length; l++) { %>
+            <%= old[i].activities[l].name %> 
+            <% if (l != old[i].activities.length - 1) { %> , <% } %> <% } %>
+          </p>
+          <% } %>
+          <button onclick="showDeetsOld()">View more details</button>
+        </div>
+      </div>
+      <% } %>
+      <div class="card">
+        <div class="heading">
+          <h2>Current Generation</h2>
+          <hr />
+        </div>
+        <div class="card-content">
+          <h3><%= itinerary[0].location %></h3>
+          <p id="act-head">Activities</p>
+          <% for (let j = 0; j < itinerary.length; j++) { %>
+          <p>
+            <span id="day-no">Day <%= j + 1 %> : </span>
+            <% for (let k = 0; k < itinerary[j].activities.length; k++) { %>
+            <%= itinerary[j].activities[k].name %> 
+            <% if (k != itinerary[j].activities.length - 1) { %> , <% } %> <% } %>
+          </p>
+          <% } %>
+          <button onclick="showDeetsNew()">View more details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    let itinerary = "<%= JSON.stringify(itinerary) %>";
+    let old = "<%= JSON.stringify(old) %>";
+
+    function showDeetsOld() {
+      let form = document.createElement("form");
+      form.setAttribute("method", "post");
+      form.setAttribute("action", "/itinerary/details");
+
+      let input = document.createElement("input");
+      input.setAttribute("type", "hidden");
+      input.setAttribute("name", "itinerary");
+      input.setAttribute("value", old);
+
+      let input2 = document.createElement("input");
+      input2.setAttribute("type", "hidden");
+      input2.setAttribute("name", "city");
+      input2.setAttribute("value", "<%= req.body.city %>");
+
+      let input3 = document.createElement("input");
+      input3.setAttribute("type", "hidden");
+      input3.setAttribute("name", "country");
+      input3.setAttribute("value", "<%= req.body.country %>");
+
+      let input4 = document.createElement("input");
+      input4.setAttribute("type", "hidden");
+      input4.setAttribute("name", "currency");
+      input4.setAttribute("value", "<%= req.body.currency %>");
+
+      let input5 = document.createElement("input");
+      input5.setAttribute("type", "hidden");
+      input5.setAttribute("name", "budget");
+      input5.setAttribute("value", "<%= req.body.budget %>");
+
+      let input6 = document.createElement("input");
+      input6.setAttribute("type", "hidden");
+      input6.setAttribute("name", "members");
+      input6.setAttribute("value", "<%= req.body.members %>");
+
+      let input7 = document.createElement("input");
+      input7.setAttribute("type", "hidden");
+      input7.setAttribute("name", "days");
+      input7.setAttribute("value", "<%= req.body.days %>");
+
+      form.appendChild(input);
+      form.appendChild(input2);
+      form.appendChild(input3);
+      form.appendChild(input4);
+      form.appendChild(input5);
+      form.appendChild(input6);
+      form.appendChild(input7);
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    function showDeetsNew() {
+      let form = document.createElement("form");
+      form.setAttribute("method", "post");
+      form.setAttribute("action", "/itinerary/details");
+
+      let input = document.createElement("input");
+      input.setAttribute("type", "hidden");
+      input.setAttribute("name", "itinerary");
+      input.setAttribute("value", itinerary);
+
+      let input2 = document.createElement("input");
+      input2.setAttribute("type", "hidden");
+      input2.setAttribute("name", "city");
+      input2.setAttribute("value", "<%= req.body.city %>");
+
+      let input3 = document.createElement("input");
+      input3.setAttribute("type", "hidden");
+      input3.setAttribute("name", "country");
+      input3.setAttribute("value", "<%= req.body.country %>");
+
+      let input4 = document.createElement("input");
+      input4.setAttribute("type", "hidden");
+      input4.setAttribute("name", "currency");
+      input4.setAttribute("value", "<%= req.body.currency %>");
+
+      let input5 = document.createElement("input");
+      input5.setAttribute("type", "hidden");
+      input5.setAttribute("name", "budget");
+      input5.setAttribute("value", "<%= req.body.budget %>");
+
+      let input6 = document.createElement("input");
+      input6.setAttribute("type", "hidden");
+      input6.setAttribute("name", "members");
+      input6.setAttribute("value", "<%= req.body.members %>");
+
+      let input7 = document.createElement("input");
+      input7.setAttribute("type", "hidden");
+      input7.setAttribute("name", "days");
+      input7.setAttribute("value", "<%= req.body.days %>");
+
+      form.appendChild(input);
+      form.appendChild(input2);
+      form.appendChild(input3);
+      form.appendChild(input4);
+      form.appendChild(input5);
+      form.appendChild(input6);
+      form.appendChild(input7);
+      document.body.appendChild(form);
+      form.submit();
+    }
+  </script>
 </body>
 
 </html>

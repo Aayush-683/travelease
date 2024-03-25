@@ -79,7 +79,7 @@
             <% for (let i = 0; i < saved.length; i++) { %>
                 <div class="saved-page" onclick="load('<%= saved[i].name %>')">
                     <h3><%= saved[i].name %></h3>
-                    <div class="delete" onclick="del('<%= saved[i].name %>')">
+                    <div class="delete" onclick="del(event, '<%= saved[i].name %>')">
                         <span>&times;</span>
                     </div>
                 </div>
@@ -167,7 +167,8 @@
         }
 
         // Delete itinerary
-        function del(itinerary) {
+        function del(event, itinerary) {
+            event.stopPropagation(); // Prevents the load function from being called
             // Create and post dummy form
             var form = document.createElement("form");
             form.setAttribute("method", "post");
