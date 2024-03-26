@@ -11,8 +11,8 @@
 </head>
 
 <body>
-  <% if (!itinerary) { %>
-  <div class="main-container">
+  <%- include('partials/nav') %>
+  <div class="main-container" style="display:<% if (!itinerary) { %> flex<% } else { %> none<% } %>;">
     <h1 id="genTitle">Generate your perfect itinerary</h1>
     <% if (error) { %>
     <p class="error"><%= error %></p>
@@ -36,7 +36,7 @@
       </div>
     </div>
   </div>
-  <% } else { %> <% for (let i=0; i < itinerary.length; i++) { %>
+  <% if (itinerary) { %> <% for (let i=0; i < itinerary.length; i++) { %>
   <div class="day<%= itinerary[i].day %>">
     <div class="parent">
       <div class="banner_img">
@@ -159,7 +159,8 @@
     <p>Weather details not available</p>
     <% } %> <% } %>
   </div>
-  <% } %> <% } %>
+  <% } %> 
+  <%- include('partials/footer') %><% } %>
   <script src="/js/itinerary.js"></script>
   <% if (generated) { %>
   <script type="text/javascript">

@@ -1,10 +1,10 @@
 function showLoading() {
-    document.getElementsByClassName("form-container")[0].style.display = "none"; // Hide the form
     document.getElementById("loading-img").style.display = "block"; // Show the loading img
-    document.getElementById("loader").style.display = "flex"; // Show the loading container
+    document.getElementsByClassName("loader")[0].style.display = "flex"; // Show the loading container
     document.getElementById("genTitle").innerHTML = "Generating your perfect itinerary..."; // Change the title
     // Hide error message
-    document.getElementsByClassName('error')[0].style.display = "none";
+    let err = document.getElementsByClassName('error')[0];
+    if (err) err.style.display = "none";
     return true; // Continue with the form submission (return false to cancel the submission)
 }
 

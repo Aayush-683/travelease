@@ -12,7 +12,6 @@ const fs = require('fs');
 const Weather = require("@tinoschroeter/weather-js");
 const weather = new Weather();
 const { G4F } = require('g4f');
-const { Integration } = require('discord.js');
 const g4f = new G4F();
 
 // Email Setup
@@ -361,7 +360,7 @@ app.post('/itinerary/save', async (req, res) => {
     fs.writeFileSync(file, itinerary, 'utf8');
     saved.push({ name, file });
     await db.set(`saved.${email}`, saved);
-    res.render('itinerary', { itinerary: false, req: req, error: "Itinerary Saved Successfully!", generated: false, weather: false, old: old });
+    res.render('account', { req: req, error: "Itinerary Saved Succesfully!", saved: saved });
 });
 
 // Load Saved Itinerary
