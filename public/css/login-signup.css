@@ -18,8 +18,8 @@ body {
   gap: 30px;
   background-color: aliceblue;
   /*  Fall Back */
-  background-image: url('/images/shifaaz-shamoon-Rl9l9mL6Pvs-unsplash.jpg');
-  background-size: cover;
+  background-image: url('/images/login.jpg');
+  background-size:cover;
   background-repeat: no-repeat;
 }
 
@@ -46,6 +46,7 @@ header {
   width: 500px;
   background-color: white;
   box-shadow: 8px 8px 20px rgb(128, 128, 128);
+  border-radius:50px ;
   position: relative;
   overflow: hidden;
 }

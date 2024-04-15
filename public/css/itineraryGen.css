@@ -6,7 +6,8 @@ body {
     gap: 20px;
     justify-content: center;
     flex-direction: column;
-    background-image: url("/images/shifaaz-shamoon-Rl9l9mL6Pvs-unsplash.jpg");
+    background-image: url("/images/itinerarybanner.jpg");
+    background-size:cover ;
 }
 
 h1 {
