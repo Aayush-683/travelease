@@ -1,6 +1,12 @@
-# TravelEase - AI-Powered Itinerary Generator
+# TravelEase — AI itinerary generator
 
-TravelEase is a dynamic web application designed to revolutionize travel planning by leveraging AI technology. It offers personalized itinerary recommendations based on user preferences, making travel planning seamless and enjoyable.
+Give it a destination, a budget and some dates, and it produces a day-by-day itinerary:
+activities, places to stay and places to eat, chosen against those constraints rather
+than pulled from a generic list. Live weather for the destination feeds into the plan.
+
+The interesting part is constraint handling — a budget and a date range have to actually
+bind the output, otherwise an LLM will happily suggest a itinerary nobody can afford or
+fit into the trip.
 
 ## Features
 
